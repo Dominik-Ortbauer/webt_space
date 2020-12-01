@@ -1,0 +1,115 @@
+body{
+    background-image: url('SpaceImage.jpg');
+    background-repeat: no-repeat;
+
+    font-family: sans-serif;
+    font-size: x-large;
+}
+
+.Header{
+    font-family: "Archivo Black", sans-serif;
+    font-weight: normal;
+    font-size: 4.4em;
+    text-align: center;
+    margin-bottom: 0;
+    margin-bottom: 1em;
+    margin-top: 0cm;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: default;
+    width: 605px;
+
+
+    background-repeat: repeat;
+
+    background: -webkit-linear-gradient(45deg, 
+    rgb(209, 209, 209) 25%,
+    rgb(194, 120, 236) 25%, 
+    rgb(194, 120, 236) 50%, 
+    rgb(136, 52, 185) 50%, 
+    rgb(136, 52, 185) 75%, 
+    rgb(51, 51, 51) 75%);
+    
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.GiantHead{   
+    margin-left: 60%;
+    margin-top: -10em;
+    
+    animation: float 4s ease-in-out infinite;
+}
+
+.Block{
+    background-color: black;
+    display: inline-block;
+    border-radius: 5mm;
+
+    margin-left: 10%;
+    margin-top: 2em;
+}
+
+.Rocket{
+    position: absolute;
+    left: 340px;
+    top: 330px;
+
+    -webkit-user-drag: none;
+    user-select: none;
+
+    animation: fly-circle 10s linear infinite;
+}
+
+@keyframes float{
+    0%{
+        transform: translateY(0px);
+    }
+
+    50%{
+        transform: translateY(-50px);
+    }
+
+    100%{
+        transform: translateY(0px);
+    }
+}
+
+@keyframes fly-circle{
+    from{
+        transform: rotate(0) translateX(300px) rotate(-45deg);
+    }
+
+    to{
+        transform: rotate(-360deg) translateX(300px) rotate(-45deg);
+    }
+}
+
+a {
+    background: linear-gradient(to bottom, rgb(105, 33, 146) 0%, rgb(105, 33, 146) 100%);
+    background-position: 0 100%;
+    background-repeat: repeat-x;
+    background-size: 4px 4px;
+    color: white;
+    text-decoration: none;
+    transition: background-size 0.2s;
+  }
+  
+  a:hover {
+    background-size: 4px 50px;
+  }
+
+
+ul{
+    list-style-type: none;
+    list-style-position: inside;
+    padding: 1em;
+    margin: 0;
+    
+    font-family: "Archivo Black", sans-serif;
+    font-size: 1cm;
+
+    color: white;
+}
