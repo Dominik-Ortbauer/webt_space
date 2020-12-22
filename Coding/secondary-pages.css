@@ -9,7 +9,7 @@ h2{
     text-align: center;
     color: purple;
     text-transform: capitalize;
-    font-size: xx-large;
+    font-size: 1.5em;
 }
 
 p{
@@ -47,6 +47,7 @@ img{
 
 .Satellite{
     vertical-align: top;
+    border-radius: 5mm 0 0 5mm;
 }
 
 .Sun{
@@ -58,8 +59,16 @@ img{
     grid-row-start: 1;
     grid-row-end: 4;
     grid-column: 2;
+    border-radius: 5mm 0 0 5mm;
 }
 
+.NavBar
+{
+    margin-top: 5mm;
+    margin-left: 3mm;
+    margin-right: 0;
+    margin-bottom: 0;
+}
 
 .NavBar>ul
 {
@@ -78,7 +87,6 @@ img{
 {
     padding: 1mm;
     background-color: rgb(107, 107, 107);
-    border-radius: 5mm;
     color: #551A8B;
     text-decoration: none;
 }
