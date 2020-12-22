@@ -60,26 +60,32 @@ img{
     grid-column: 2;
 }
 
-.NavBar
-{
-    background-color: black;
-}
 
 .NavBar>ul
 {
     list-style-type: none;
+    
     margin: 0;
     padding: 0;
-    
 }
 .NavBar li
 {
     display: inline;
+    font-weight: bold;
 }
 
 .NavBar a
 {
-    
+    padding: 1mm;
+    background-color: rgb(107, 107, 107);
+    border-radius: 5mm;
+    color: #551A8B;
+    text-decoration: none;
+}
+
+.NavBar a:hover
+{
+    background-color: rgb(97, 96, 96);
 }
 
 table, th, td{
