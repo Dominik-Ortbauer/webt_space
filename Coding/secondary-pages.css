@@ -32,6 +32,8 @@ p{
 .BlockContainer{    
     display: grid;
     grid-gap: 50px;
+    margin-left: 100px;
+    margin-right: 175px;
 
     grid-template-columns: auto auto;
 }
