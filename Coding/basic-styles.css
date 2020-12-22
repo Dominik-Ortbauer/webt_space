@@ -92,6 +92,14 @@ body{
     
 }
 
+.Toolbar>ul
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    
+}
+
 a {
     background: linear-gradient(to bottom, rgb(105, 33, 146) 0%, rgb(105, 33, 146) 100%);
     background-position: 0 100%;
@@ -102,12 +110,11 @@ a {
     transition: background-size 0.2s;
   }
   
-  a:hover {
+a:hover {
     background-size: 4px 50px;
   }
 
-
-ul{
+  ul{
     list-style-type: none;
     list-style-position: inside;
     padding: 1em;
