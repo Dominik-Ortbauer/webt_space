@@ -60,6 +60,27 @@ img{
     grid-column: 2;
 }
 
+.NavBar
+{
+    background-color: black;
+}
+
+.NavBar>ul
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    
+}
+.NavBar li
+{
+    display: inline;
+}
+
+.NavBar a
+{
+    
+}
 
 table, th, td{
     margin-left: auto;

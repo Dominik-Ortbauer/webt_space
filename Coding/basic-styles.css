@@ -87,19 +87,6 @@ body{
     }
 }
 
-.Toolbar
-{
-    
-}
-
-.Toolbar>ul
-{
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    
-}
-
 a {
     background: linear-gradient(to bottom, rgb(105, 33, 146) 0%, rgb(105, 33, 146) 100%);
     background-position: 0 100%;
