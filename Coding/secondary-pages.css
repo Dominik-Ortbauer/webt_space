@@ -2,7 +2,7 @@ body{
     background-color: gray;
 
     font-family: sans-serif;
-    font-size: x-large;
+    font-size: 3vmin;
 }
 
 h2{
@@ -29,18 +29,30 @@ p{
     margin-top: 5%;
 }
 
-.BlockContainer{    
-    display: grid;
-    grid-gap: 50px;
-    margin-left: 100px;
-    margin-right: 100px;
+@media not screen and (max-width: 700px)
+{
+    .BlockContainer{    
+        display: grid;
+        grid-gap: 50px;
+        margin-left: 3%;
+        margin-right: 3%;
+    
+        grid-template-columns: auto auto;
+    }
+}
 
-    grid-template-columns: auto auto;
+@media only screen and (max-width: 700px)
+{
+    .BlockContainer
+    {
+        grid-template-columns: auto;
+    }
 }
 
 .Block{
     background-color: black;
     border-radius: 5mm;
+    font-size: 6vm;
 }
 
 img{
@@ -48,8 +60,10 @@ img{
 }
 
 .Satellite{
+    margin-left: 3%;
+    margin-right: 3%;
     vertical-align: top;
-    border-radius: 5mm 0 0 5mm;
+    border-radius: 5mm;
 }
 
 .Sun{
@@ -61,7 +75,7 @@ img{
     grid-row-start: 1;
     grid-row-end: 4;
     grid-column: 2;
-    border-radius: 5mm 0 0 5mm;
+    border-radius: 5mm;
 }
 
 .NavBar
@@ -72,6 +86,13 @@ img{
     margin-bottom: 0;
 }
 
+@media only screen and (max-width: 700px)
+{
+    .NavBar
+    {
+        display: none;
+    }
+}
 .NavBar>ul
 {
     list-style-type: none;
@@ -79,6 +100,7 @@ img{
     margin: 0;
     padding: 0;
 }
+
 .NavBar li
 {
     display: inline;
