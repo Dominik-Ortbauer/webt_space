@@ -1,6 +1,16 @@
-abstract class Entity{
+export abstract class Entity{
     private hitbox: Hitbox;
-    private img: Image
+    private img: HTMLImageElement;
+
+    protected constructor(imgSrc: string) {
+        this.img.src = imgSrc;
+
+        this.img.onload = () =>{
+
+        }
+    }
+
+    abstract update(): void;
 }
 
 export class Hitbox {
