@@ -1,20 +1,31 @@
 import {Entity} from './Entity'
 
 class Player extends Entity {
-    constructor(imgSrc: string) {
-        super(imgSrc);
+    private speed:number;
+
+    constructor(imgSrc: string, x: number, y: number) {
+        super(imgSrc, x, y);
 
         document.addEventListener('keydown', (ev)=>{
-            if(ev.key === 'space')
-                this.shoot();
+            switch (ev.key) {
+                case 'space':
+                    this.shoot();
+                case 'w':
+                    this.moveY(-this.speed);
+                case 'a':
+                    this.moveX(-this.speed);
+                case 's':
+                    this.moveY(this.speed);
+                case 'd':
+                    this.moveX(this.speed);
+            }
         });
     }
 
-    private move(): void{
-        
+    update(){
+
     }
 
     private shoot(): void{
-
     }
 }
