@@ -10,6 +10,14 @@ export abstract class Entity{
         }
     }
 
+    public moveX(pixel: number): void {
+        this.hitbox.moveX(pixel);
+    }
+
+    public moveY(pixel: number): void {
+        this.hitbox.moveY(pixel);
+    }
+
     abstract update(): void;
 }
 
