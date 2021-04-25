@@ -1,25 +1,6 @@
 import {Entity} from './Entity.js'
 
-<<<<<<< Updated upstream
-class Player extends Entity {
-    private speed:number;
 
-    constructor(imgSrc: string, x: number, y: number) {
-        super(imgSrc, x, y);
-
-        document.addEventListener('keydown', (ev)=>{
-            switch (ev.key) {
-                case 'space':
-                    this.shoot();
-                case 'w':
-                    this.moveY(-this.speed);
-                case 'a':
-                    this.moveX(-this.speed);
-                case 's':
-                    this.moveY(this.speed);
-                case 'd':
-                    this.moveX(this.speed);
-=======
 export class Player extends Entity {
     constructor(imgSrc: string) {
         super(imgSrc, 100, 100);
@@ -48,15 +29,10 @@ export class Player extends Entity {
                 case "d":
                     this.move(1, 0);
                     break;
->>>>>>> Stashed changes
             }
         });
     }
 
-<<<<<<< Updated upstream
-    update(){
-
-=======
     public update() {
         super.draw();
     }
@@ -64,7 +40,6 @@ export class Player extends Entity {
     private move(x: number, y: number): void{
         super.moveX(x);
         super.moveY(y);
->>>>>>> Stashed changes
     }
 
     private shoot(): void{
