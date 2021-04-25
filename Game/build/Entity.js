@@ -1,8 +1,12 @@
 export class Entity {
     constructor(imgSrc, x, y) {
+        this.loaded = false;
+        this.img = new Image();
         this.img.src = imgSrc;
         this.img.onload = () => {
             this.hitbox = new Hitbox(new Position(x, y), new Position(x + this.img.width, y + this.img.height));
+            this.draw();
+            this.loaded = true;
         };
     }
     moveX(pixel) {
@@ -10,6 +14,13 @@ export class Entity {
     }
     moveY(pixel) {
         this.hitbox.moveY(pixel);
+    }
+    draw() {
+        if (!this.loaded)
+            return;
+        const canvas = document.getElementById("space");
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(this.img, this.hitbox.leftUpper.x, this.hitbox.leftUpper.y);
     }
 }
 export class Hitbox {
