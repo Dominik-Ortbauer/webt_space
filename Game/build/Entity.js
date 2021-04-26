@@ -4,15 +4,21 @@ export class Entity {
         this.img = new Image();
         this.img.src = imgSrc;
         this.img.onload = () => {
-            this.hitbox = new Hitbox(new Position(x, y), new Position(x + this.img.width, y + this.img.height));
+            const halfWidth = this.img.width / 2;
+            const halfHeight = this.img.height / 2;
+            this.hitbox = new Hitbox(new Position(x - halfWidth, y - halfHeight), new Position(x + halfWidth, y + halfHeight));
             this.draw();
             this.loaded = true;
         };
     }
     moveX(pixel) {
+        if (!this.loaded)
+            return;
         this.hitbox.moveX(pixel);
     }
     moveY(pixel) {
+        if (!this.loaded)
+            return;
         this.hitbox.moveY(pixel);
     }
     draw() {
@@ -48,13 +54,8 @@ export class Position {
     moveY(pixel) {
         this.y += pixel;
     }
-    horizontalDistanceTo(other) {
-        const distance = this.x - other.x;
-        return Math.abs(distance);
-    }
-    verticalDistanceTo(other) {
-        const distance = this.y - other.y;
-        return Math.abs(distance);
+    middle(other) {
+        return new Position((this.x + other.x) / 2, (this.y + other.y) / 2);
     }
 }
 //# sourceMappingURL=Entity.js.map

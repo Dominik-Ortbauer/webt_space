@@ -1,23 +1,31 @@
 export abstract class Entity{
-    private hitbox: Hitbox;
+    protected hitbox: Hitbox;
     readonly img: HTMLImageElement;
-    private loaded: boolean = false;
+    protected loaded: boolean = false;
 
     protected constructor(imgSrc: string, x: number, y: number) {
         this.img = new Image();
         this.img.src = imgSrc;
         this.img.onload = () => {
-            this.hitbox = new Hitbox(new Position(x, y), new Position(x + this.img.width, y + this.img.height));
+            const halfWidth = this.img.width/2;
+            const halfHeight = this.img.height/2;
+            this.hitbox = new Hitbox(new Position(x - halfWidth, y - halfHeight), new Position(x + halfWidth, y + halfHeight));
             this.draw();
             this.loaded = true;
         }
     }
 
     public moveX(pixel: number): void {
+        if(!this.loaded)
+            return;
+
         this.hitbox.moveX(pixel);
     }
 
     public moveY(pixel: number): void {
+        if(!this.loaded)
+            return;
+
         this.hitbox.moveY(pixel);
     }
 
@@ -30,7 +38,7 @@ export abstract class Entity{
         ctx.drawImage(this.img, this.hitbox.leftUpper.x, this.hitbox.leftUpper.y);
     }
 
-    abstract update(): void;
+    abstract update(deltaTime: number): void;
 }
 
 export class Hitbox {
@@ -62,13 +70,7 @@ export class Position {
         this.y += pixel;
     }
 
-    public horizontalDistanceTo(other: Position): number {
-        const distance = this.x - other.x;
-        return Math.abs(distance);
-    }
-
-    public verticalDistanceTo(other: Position): number {
-        const distance = this.y - other.y;
-        return Math.abs(distance);
+    public middle(other: Position): Position {
+        return new Position((this.x + other.x) / 2, (this.y + other.y) / 2);
     }
 }

@@ -1,33 +1,38 @@
-import { Entity } from './Entity.js';
+import { Entity, Position } from './Entity.js';
+import { canvas, instantiate } from './Game.js';
+import { Projectile } from "./Projectile.js";
 export class Player extends Entity {
     constructor(imgSrc) {
-        super(imgSrc, 100, 100);
+        super(imgSrc, canvas.width / 2, canvas.height - 100);
+        this.keysPressed = {};
+        this.speed = 3;
+        this.startShootCooldown = 1;
+        this.shootCooldown = 0;
         document.addEventListener('keydown', (ev) => {
-            if (ev.key === 'space')
-                this.shoot();
-            switch (ev.key) {
-                case " ":
-                    this.shoot();
-                    break;
-                case "w":
-                    this.move(0, -1);
-                    break;
-                case "a":
-                    this.move(-1, 0);
-                    break;
-                case "s":
-                    this.move(0, 1);
-                    break;
-                case "d":
-                    this.move(1, 0);
-                    break;
-            }
+            this.keysPressed[ev.key] = true;
+        });
+        document.addEventListener('keyup', (ev) => {
+            delete this.keysPressed[ev.key];
         });
     }
-    update() {
-        super.draw();
+    update(deltaTime) {
+        this.shootCooldown -= deltaTime;
+        if (this.keysPressed['w'] && this.hitbox.leftUpper.y > 0)
+            this.move(0, -1);
+        if (this.keysPressed['a'] && this.hitbox.leftUpper.x > 0)
+            this.move(-1, 0);
+        if (this.keysPressed['s'] && this.hitbox.rightLower.y < canvas.height)
+            this.move(0, 1);
+        if (this.keysPressed['d'] && this.hitbox.rightLower.x < canvas.width)
+            this.move(1, 0);
+        if (this.keysPressed[' '] && this.shootCooldown <= 0) {
+            instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Position(0, -5)));
+            this.shootCooldown = this.startShootCooldown;
+        }
     }
     move(x, y) {
+        x *= this.speed;
+        y *= this.speed;
         super.moveX(x);
         super.moveY(y);
     }
