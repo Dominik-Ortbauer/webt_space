@@ -1,10 +1,12 @@
-import {Entity} from "./Entity.js";
+import {Entity, IUpdate, Vector} from "./Entity.js";
 import {Player} from "./Player.js";
+import {Flock} from "./Flock.js";
+import {Boid} from "./Boid.js";
 
 let ctx: CanvasRenderingContext2D;
 export let canvas: HTMLCanvasElement;
 
-let entities: Entity[] = [];
+let updates: IUpdate[] = [];
 
 let lastTimeStamp: number = 0;
 
@@ -13,20 +15,22 @@ function init(): void{
     ctx = canvas.getContext("2d");
 
 
-    instantiate(new Player('./U2cZy+.jpg'));
+    //instantiate(new Player());
+    const flock: Flock = new Flock(10, new Vector(600, 400), 50);
+    instantiate(flock);
     lastTimeStamp = Date.now();
     update();
 }
 
-export function instantiate(entity: Entity){
-    entities.push(entity);
+export function instantiate(update: IUpdate){
+    updates.push(update);
 }
 
-export function destroy(entity: Entity){
-    const idx = entities.indexOf(entity, 0);
+export function destroy(update: IUpdate){
+    const idx = updates.indexOf(update, 0);
 
     if(idx > -1){
-        entities.splice(idx, 1);
+        updates.splice(idx, 1);
     }
 }
 
@@ -36,9 +40,11 @@ function clearCanvas(): void{
 }
 
 function updateAllEntities(deltaTime: number): void{
-    for(let en of entities){
+    for(let en of updates){
         en.update(deltaTime);
-        en.draw();
+        if(en instanceof Entity){
+            (<Entity>en).draw();
+        }
     }
 }
 

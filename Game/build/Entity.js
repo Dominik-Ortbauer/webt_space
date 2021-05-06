@@ -1,15 +1,21 @@
 export class Entity {
-    constructor(imgSrc, x, y) {
+    constructor(imgSrc, pos, rotation) {
+        this.rotation = rotation;
         this.loaded = false;
         this.img = new Image();
         this.img.src = imgSrc;
         this.img.onload = () => {
             const halfWidth = this.img.width / 2;
             const halfHeight = this.img.height / 2;
-            this.hitbox = new Hitbox(new Position(x - halfWidth, y - halfHeight), new Position(x + halfWidth, y + halfHeight));
+            this.hitbox = new Hitbox(new Vector(pos.x - halfWidth, pos.y - halfHeight), new Vector(pos.x + halfWidth, pos.y + halfHeight));
             this.draw();
             this.loaded = true;
         };
+    }
+    setPosition(pos) {
+        const halfWidth = this.img.width / 2;
+        const halfHeight = this.img.height / 2;
+        this.hitbox = new Hitbox(new Vector(pos.x - halfWidth, pos.y - halfHeight), new Vector(pos.x + halfWidth, pos.y + halfHeight));
     }
     moveX(pixel) {
         if (!this.loaded)
@@ -26,7 +32,12 @@ export class Entity {
             return;
         const canvas = document.getElementById("space");
         const ctx = canvas.getContext("2d");
-        ctx.drawImage(this.img, this.hitbox.leftUpper.x, this.hitbox.leftUpper.y);
+        const middle = this.hitbox.leftUpper.middle(this.hitbox.rightLower);
+        ctx.save();
+        ctx.translate(middle.x, middle.y);
+        ctx.rotate(this.rotation);
+        ctx.drawImage(this.img, -this.img.width / 2, -this.img.height / 2);
+        ctx.restore();
     }
 }
 export class Hitbox {
@@ -43,7 +54,7 @@ export class Hitbox {
         this.rightLower.moveY(pixel);
     }
 }
-export class Position {
+export class Vector {
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -55,7 +66,47 @@ export class Position {
         this.y += pixel;
     }
     middle(other) {
-        return new Position((this.x + other.x) / 2, (this.y + other.y) / 2);
+        return new Vector((this.x + other.x) / 2, (this.y + other.y) / 2);
+    }
+    static add(v1, v2) {
+        return new Vector(v1.x + v2.x, v1.y + v2.y);
+    }
+    add(other) {
+        this.x += other.x;
+        this.y += other.y;
+    }
+    static sub(v1, v2) {
+        return new Vector(v1.x - v2.x, v1.y - v2.y);
+    }
+    sub(other) {
+        this.x -= other.x;
+        this.y -= other.y;
+    }
+    div(value) {
+        this.x /= value;
+        this.y /= value;
+    }
+    scale(value) {
+        this.x *= value;
+        this.y *= value;
+    }
+    distanceTo(other) {
+        return Math.sqrt((this.x - other.x) * (this.x - other.x) + (this.y - other.y) * (this.y - other.y));
+    }
+    static random() {
+        const angle = Math.random() * Math.PI * 2;
+        return new Vector(Math.cos(angle), Math.sin(angle));
+    }
+    magnitude() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    }
+    setMagnitude(value) {
+        this.scale(value / this.magnitude());
+    }
+    limit(value) {
+        if (this.magnitude() > value) {
+            this.setMagnitude(value);
+        }
     }
 }
 //# sourceMappingURL=Entity.js.map

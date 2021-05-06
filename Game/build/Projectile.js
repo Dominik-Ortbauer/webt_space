@@ -2,7 +2,7 @@ import { Entity } from "./Entity.js";
 import { destroy } from "./Game.js";
 export class Projectile extends Entity {
     constructor(startPos, dir) {
-        super('./U2cZy+.jpg', startPos.x, startPos.y);
+        super('./U2cZy+.jpg', startPos, 0);
         this.startPos = startPos;
         this.dir = dir;
     }
