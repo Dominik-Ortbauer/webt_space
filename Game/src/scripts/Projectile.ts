@@ -1,9 +1,9 @@
-import {Entity, Position} from "./Entity.js";
+import {Entity, Vector} from "./Entity.js";
 import {destroy} from "./Game.js";
 
 export class Projectile extends Entity{
-    constructor(private readonly startPos: Position, private readonly dir: Position) {
-        super('U2cZy+.jpg', startPos.x, startPos.y);
+    constructor(private readonly startPos: Vector, private readonly dir: Vector) {
+        super('./U2cZy+.jpg', startPos, 0);
     }
 
     public update(deltaTime: number) {
