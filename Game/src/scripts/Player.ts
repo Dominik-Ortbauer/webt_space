@@ -9,7 +9,7 @@ export class Player extends Entity {
     private shootCooldown = 0;
 
     constructor() {
-        super('./U2cZy+.jpg', new Vector(canvas.width/2, canvas.height - 100), 0);
+        super('U2cZy+.jpg', new Vector(canvas.width/2, canvas.height - 100), 0);
 
         document.addEventListener('keydown', (ev)=>{
             this.keysPressed[ev.key] = true;
@@ -36,8 +36,7 @@ export class Player extends Entity {
             this.move(1, 0);
 
         if(this.keysPressed[' '] && this.shootCooldown <= 0) {
-            instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Vector(0, -5)));
-            this.shootCooldown = this.startShootCooldown;
+            this.shoot();
         }
     }
 
@@ -49,5 +48,7 @@ export class Player extends Entity {
     }
 
     private shoot(): void{
+        instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Vector(0, -5)));
+        this.shootCooldown = this.startShootCooldown;
     }
 }

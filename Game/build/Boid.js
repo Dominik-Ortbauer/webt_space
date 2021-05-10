@@ -3,7 +3,7 @@ import { Vector } from "./Entity.js";
 import { canvas } from "./Game.js";
 export class Boid extends Enemy {
     constructor(health, pos, rotation, myFlock) {
-        super('./Boid.png', health, pos, rotation);
+        super('Boid.png', health, pos, rotation);
         this.pos = pos;
         this.myFlock = myFlock;
         this.vel = new Vector(0, 1); // Vector.random();

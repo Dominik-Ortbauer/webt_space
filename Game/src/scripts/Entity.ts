@@ -9,7 +9,7 @@ export abstract class Entity implements IUpdate{
 
     protected constructor(imgSrc: string, pos: Vector, protected rotation: number) {
         this.img = new Image();
-        this.img.src = imgSrc;
+        this.img.src = './Images/' + imgSrc;
         this.img.onload = () => {
             const halfWidth = this.img.width/2;
             const halfHeight = this.img.height/2;
