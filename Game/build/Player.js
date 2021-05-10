@@ -3,7 +3,7 @@ import { canvas, instantiate } from './Game.js';
 import { Projectile } from "./Projectile.js";
 export class Player extends Entity {
     constructor() {
-        super('U2cZy+.jpg', new Vector(canvas.width / 2, canvas.height - 100), 0);
+        super('Spaceship.png', new Vector(canvas.width / 2, canvas.height - 100), 0);
         this.keysPressed = {};
         this.speed = 3;
         this.startShootCooldown = 1;

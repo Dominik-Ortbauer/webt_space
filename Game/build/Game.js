@@ -1,5 +1,7 @@
 import { Entity, Vector } from "./Entity.js";
+import { Player } from "./Player.js";
 import { Flock } from "./Flock.js";
+import { Projectile } from "./Projectile.js";
 let ctx;
 export let canvas;
 let updates = [];
@@ -7,9 +9,9 @@ let lastTimeStamp = 0;
 function init() {
     canvas = document.getElementById("space");
     ctx = canvas.getContext("2d");
-    //instantiate(new Player());
+    instantiate(new Player());
+    instantiate(new Projectile(new Vector(300, 300), new Vector(0, 0)));
     const flock = new Flock(100, new Vector(600, 400), 100);
-    instantiate(flock);
     lastTimeStamp = Date.now();
     update();
 }
@@ -31,8 +33,23 @@ function updateAllEntities(deltaTime) {
         en.update(deltaTime);
         if (en instanceof Entity) {
             en.draw();
+            const others = collidesWith(en);
+            for (let other of others) {
+                en.onCollision(other);
+            }
         }
     }
+}
+function collidesWith(en) {
+    let others = [];
+    for (let up of updates) {
+        if (up instanceof Entity) {
+            if (en.loaded && up.loaded && en != up && en.collides(up)) {
+                others.push(up);
+            }
+        }
+    }
+    return others;
 }
 function update() {
     clearCanvas();

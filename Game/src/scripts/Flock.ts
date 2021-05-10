@@ -1,8 +1,8 @@
 import {IUpdate, Vector} from "./Entity.js";
 import {Boid} from "./Boid.js";
-import {destroy} from "./Game.js";
+import {destroy, instantiate} from "./Game.js";
 
-export class Flock implements IUpdate{
+export class Flock{
     private boids: Boid[] = [];
 
     constructor(amountOfBoids: number, pos: Vector, spray: number) {
@@ -16,6 +16,7 @@ export class Flock implements IUpdate{
 
             const boid: Boid = new Boid(3, Vector.add(new Vector(x, y), pos), Math.random() * (Math.PI * 2), this);
             this.boids.push(boid);
+            instantiate(boid);
         }
     }
 
@@ -29,17 +30,5 @@ export class Flock implements IUpdate{
         }
 
         return visibleBoids;
-    }
-
-    update(deltaTime: number) {
-        if(this.boids.length === 0){
-            destroy(this);
-            return;
-        }
-
-        for(let boid of this.boids){
-            boid.update(deltaTime);
-            boid.draw();
-        }
     }
 }

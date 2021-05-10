@@ -5,7 +5,7 @@ export interface IUpdate{
 export abstract class Entity implements IUpdate{
     protected hitbox: Hitbox;
     readonly img: HTMLImageElement;
-    protected loaded: boolean = false;
+    public loaded: boolean = false;
 
     protected constructor(imgSrc: string, pos: Vector, protected rotation: number) {
         this.img = new Image();
@@ -51,9 +51,20 @@ export abstract class Entity implements IUpdate{
         ctx.rotate(this.rotation);
         ctx.drawImage(this.img, -this.img.width/2, -this.img.height/2);
         ctx.restore();
+
+        ctx.strokeStyle = 'white';
+        ctx.beginPath();
+        ctx.rect(this.hitbox.leftUpper.x, this.hitbox.leftUpper.y, this.hitbox.rightLower.x - this.hitbox.leftUpper.x, this.hitbox.rightLower.y - this.hitbox.leftUpper.y);
+        ctx.stroke();
     }
 
-    abstract update(deltaTime: number): void;
+    public collides(other: Entity): boolean{
+        return this.hitbox.collides(other.hitbox);
+    }
+
+    public abstract update(deltaTime: number): void;
+
+    public onCollision(other: Entity): void{}
 }
 
 export class Hitbox {
@@ -70,11 +81,26 @@ export class Hitbox {
         this.leftUpper.moveY(pixel);
         this.rightLower.moveY(pixel);
     }
+
+    public collides(other: Hitbox): boolean{
+        let collides: boolean = this.leftUpper.containedIn(other.leftUpper, other.rightLower);
+        collides = collides || this.rightLower.containedIn(other.leftUpper, other.rightLower);
+
+        collides = collides || other.leftUpper.containedIn(this.leftUpper, this.rightLower);
+        collides = collides || other.rightLower.containedIn(this.leftUpper, this.rightLower);
+
+        return collides;
+    }
 }
 
 export class Vector {
     constructor(public x: number,
                 public y: number) {
+    }
+
+    public containedIn(leftUpper: Vector, rightLower: Vector): boolean{
+        let collides: boolean = this.x >= leftUpper.x && this.x <= rightLower.x;
+        return collides && this.y >= leftUpper.y && this.y <= rightLower.y;
     }
 
     public moveX(pixel: number): void {
