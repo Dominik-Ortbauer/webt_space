@@ -16,7 +16,7 @@ function init(): void{
 
 
     //instantiate(new Player());
-    const flock: Flock = new Flock(10, new Vector(600, 400), 50);
+    const flock: Flock = new Flock(50, new Vector(600, 400), 50);
     instantiate(flock);
     lastTimeStamp = Date.now();
     update();

@@ -1,9 +1,9 @@
-import { Entity, Position } from './Entity.js';
+import { Entity, Vector } from './Entity.js';
 import { canvas, instantiate } from './Game.js';
 import { Projectile } from "./Projectile.js";
 export class Player extends Entity {
-    constructor(imgSrc) {
-        super(imgSrc, canvas.width / 2, canvas.height - 100);
+    constructor() {
+        super('U2cZy+.jpg', new Vector(canvas.width / 2, canvas.height - 100), 0);
         this.keysPressed = {};
         this.speed = 3;
         this.startShootCooldown = 1;
@@ -25,7 +25,7 @@ export class Player extends Entity {
             this.move(0, 1);
         if (this.keysPressed['d'] && this.hitbox.rightLower.x < canvas.width)
             this.move(1, 0);
-        if (this.keysPressed[' ']) {
+        if (this.keysPressed[' '] && this.shootCooldown <= 0) {
             this.shoot();
         }
     }
@@ -36,10 +36,8 @@ export class Player extends Entity {
         super.moveY(y);
     }
     shoot() {
-        if (this.shootCooldown <= 0) {
-            instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Position(0, -5)));
-            this.shootCooldown = this.startShootCooldown;
-        }
+        instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Vector(0, -5)));
+        this.shootCooldown = this.startShootCooldown;
     }
 }
 //# sourceMappingURL=Player.js.map

@@ -17,7 +17,7 @@ export class Boid extends Enemy{
     private mouse: Vector;
 
     constructor(health: number, public pos: Vector, rotation: number, private myFlock: Flock) {
-        super('./Boid.png', health, pos, rotation);
+        super('Boid.png', health, pos, rotation);
         this.vel.scale(10);
         document.addEventListener("mousemove", (ev: MouseEvent) => {
             this.mouse = new Vector(ev.clientX, ev.clientY);
