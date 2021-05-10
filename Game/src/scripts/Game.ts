@@ -13,7 +13,7 @@ function init(): void{
     ctx = canvas.getContext("2d");
 
 
-    instantiate(new Player('./U2cZy+.jpg'));
+    instantiate(new Player('U2cZy+.jpg'));
     lastTimeStamp = Date.now();
     update();
 }

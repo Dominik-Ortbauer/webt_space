@@ -5,7 +5,7 @@ export abstract class Entity{
 
     protected constructor(imgSrc: string, x: number, y: number) {
         this.img = new Image();
-        this.img.src = imgSrc;
+        this.img.src = './Images/' + imgSrc;
         this.img.onload = () => {
             const halfWidth = this.img.width/2;
             const halfHeight = this.img.height/2;

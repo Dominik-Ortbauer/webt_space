@@ -35,9 +35,8 @@ export class Player extends Entity {
         if(this.keysPressed['d'] && this.hitbox.rightLower.x < canvas.width)
             this.move(1, 0);
 
-        if(this.keysPressed[' '] && this.shootCooldown <= 0) {
-            instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Position(0, -5)));
-            this.shootCooldown = this.startShootCooldown;
+        if(this.keysPressed[' ']) {
+            this.shoot();
         }
     }
 
@@ -49,5 +48,10 @@ export class Player extends Entity {
     }
 
     private shoot(): void{
+        if(this.shootCooldown <= 0)
+        {
+            instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Position(0, -5)));
+            this.shootCooldown = this.startShootCooldown;
+        }
     }
 }

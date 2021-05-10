@@ -6,7 +6,7 @@ let lastTimeStamp = 0;
 function init() {
     canvas = document.getElementById("space");
     ctx = canvas.getContext("2d");
-    instantiate(new Player('./U2cZy+.jpg'));
+    instantiate(new Player('U2cZy+.jpg'));
     lastTimeStamp = Date.now();
     update();
 }

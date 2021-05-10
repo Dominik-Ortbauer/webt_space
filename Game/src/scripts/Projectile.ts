@@ -3,7 +3,7 @@ import {destroy} from "./Game.js";
 
 export class Projectile extends Entity{
     constructor(private readonly startPos: Position, private readonly dir: Position) {
-        super('./U2cZy+.jpg', startPos.x, startPos.y);
+        super('U2cZy+.jpg', startPos.x, startPos.y);
     }
 
     public update(deltaTime: number) {
