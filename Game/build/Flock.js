@@ -1,5 +1,6 @@
 import { Vector } from "./Entity.js";
 import { Boid } from "./Boid.js";
+import { destroy } from "./Game.js";
 export class Flock {
     constructor(amountOfBoids, pos, spray) {
         this.boids = [];
@@ -22,6 +23,10 @@ export class Flock {
         return visibleBoids;
     }
     update(deltaTime) {
+        if (this.boids.length === 0) {
+            destroy(this);
+            return;
+        }
         for (let boid of this.boids) {
             boid.update(deltaTime);
             boid.draw();

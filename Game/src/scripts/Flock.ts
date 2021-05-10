@@ -1,6 +1,6 @@
 import {IUpdate, Vector} from "./Entity.js";
 import {Boid} from "./Boid.js";
-import {canvas, instantiate} from "./Game.js";
+import {destroy} from "./Game.js";
 
 export class Flock implements IUpdate{
     private boids: Boid[] = [];
@@ -32,6 +32,11 @@ export class Flock implements IUpdate{
     }
 
     update(deltaTime: number) {
+        if(this.boids.length === 0){
+            destroy(this);
+            return;
+        }
+
         for(let boid of this.boids){
             boid.update(deltaTime);
             boid.draw();

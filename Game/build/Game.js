@@ -8,7 +8,7 @@ function init() {
     canvas = document.getElementById("space");
     ctx = canvas.getContext("2d");
     //instantiate(new Player());
-    const flock = new Flock(10, new Vector(600, 400), 50);
+    const flock = new Flock(100, new Vector(600, 400), 100);
     instantiate(flock);
     lastTimeStamp = Date.now();
     update();
@@ -17,7 +17,7 @@ export function instantiate(update) {
     updates.push(update);
 }
 export function destroy(update) {
-    const idx = updates.indexOf(update, 0);
+    const idx = updates.indexOf(update);
     if (idx > -1) {
         updates.splice(idx, 1);
     }

@@ -1,7 +1,6 @@
 import {Entity, IUpdate, Vector} from "./Entity.js";
 import {Player} from "./Player.js";
 import {Flock} from "./Flock.js";
-import {Boid} from "./Boid.js";
 
 let ctx: CanvasRenderingContext2D;
 export let canvas: HTMLCanvasElement;
@@ -16,7 +15,7 @@ function init(): void{
 
 
     //instantiate(new Player());
-    const flock: Flock = new Flock(10, new Vector(600, 400), 50);
+    const flock: Flock = new Flock(100, new Vector(600, 400), 100);
     instantiate(flock);
     lastTimeStamp = Date.now();
     update();
@@ -27,7 +26,7 @@ export function instantiate(update: IUpdate){
 }
 
 export function destroy(update: IUpdate){
-    const idx = updates.indexOf(update, 0);
+    const idx = updates.indexOf(update);
 
     if(idx > -1){
         updates.splice(idx, 1);
