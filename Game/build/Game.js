@@ -8,7 +8,7 @@ function init() {
     canvas = document.getElementById("space");
     ctx = canvas.getContext("2d");
     //instantiate(new Player());
-    const flock = new Flock(50, new Vector(600, 400), 50);
+    const flock = new Flock(200, new Vector(600, 400), 400);
     instantiate(flock);
     lastTimeStamp = Date.now();
     update();

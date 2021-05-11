@@ -11,7 +11,7 @@ export class Boid extends Enemy{
     public static cohesion = 1;
     public static alignment = 1;
 
-    private vel: Vector = new Vector(0, 1);// Vector.random();
+    private vel: Vector = Vector.random();
     private acc: Vector = new Vector(0.0, 0.0);
 
     private mouse: Vector;
@@ -19,10 +19,15 @@ export class Boid extends Enemy{
     constructor(health: number, public pos: Vector, rotation: number, private myFlock: Flock) {
         super('Boid.png', health, pos, rotation);
         this.vel.scale(10);
-        document.addEventListener("mousemove", (ev: MouseEvent) => {
+
+        canvas.addEventListener("mousemove", (ev: MouseEvent) => {
             this.mouse = new Vector(ev.clientX, ev.clientY);
             this.mouse.sub(new Vector(canvas.offsetLeft, canvas.offsetTop));
-        })
+        });
+
+        canvas.addEventListener("mouseleave", (ev: MouseEvent) => {
+            this.mouse = null;
+        });
     }
 
     public update(deltaTime: number): void {
@@ -30,10 +35,10 @@ export class Boid extends Enemy{
         this.alignment();
         this.cohesion();
         this.separation();
-        //this.loopEdges();
-        this.repelEdges();
+        this.loopEdges();
+        //this.repelEdges();
 
-        if(this.mouse !== undefined){
+        if(this.mouse !== undefined && this.mouse != null){
             this.moveTowards(this.mouse);
         }
 

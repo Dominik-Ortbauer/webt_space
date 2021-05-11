@@ -6,12 +6,15 @@ export class Boid extends Enemy {
         super('Boid.png', health, pos, rotation);
         this.pos = pos;
         this.myFlock = myFlock;
-        this.vel = new Vector(0, 1); // Vector.random();
+        this.vel = Vector.random();
         this.acc = new Vector(0.0, 0.0);
         this.vel.scale(10);
-        document.addEventListener("mousemove", (ev) => {
+        canvas.addEventListener("mousemove", (ev) => {
             this.mouse = new Vector(ev.clientX, ev.clientY);
             this.mouse.sub(new Vector(canvas.offsetLeft, canvas.offsetTop));
+        });
+        canvas.addEventListener("mouseleave", (ev) => {
+            this.mouse = null;
         });
     }
     update(deltaTime) {
@@ -19,9 +22,9 @@ export class Boid extends Enemy {
         this.alignment();
         this.cohesion();
         this.separation();
-        //this.loopEdges();
-        this.repelEdges();
-        if (this.mouse !== undefined) {
+        this.loopEdges();
+        //this.repelEdges();
+        if (this.mouse !== undefined && this.mouse != null) {
             this.moveTowards(this.mouse);
         }
         this.pos.add(this.vel);
