@@ -16,7 +16,7 @@ export class Boid extends Enemy{
 
     private mouse: Vector;
 
-    constructor(health: number, public pos: Vector, rotation: number, private myFlock: Flock) {
+    constructor(health: number, public pos: Vector, rotation: number, public myFlock: Flock) {
         super('Boid.png', health, pos, rotation);
         this.vel.scale(10);
 
@@ -38,7 +38,7 @@ export class Boid extends Enemy{
         this.loopEdges();
         //this.repelEdges();
 
-        if(this.mouse !== undefined && this.mouse != null){
+        if(this.mouse !== undefined && this.mouse !== null){
             this.moveTowards(this.mouse);
         }
 

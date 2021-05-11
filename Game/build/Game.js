@@ -1,7 +1,7 @@
 import { Entity, Vector } from "./Entity.js";
 import { Player } from "./Player.js";
 import { Flock } from "./Flock.js";
-import { Projectile } from "./Projectile.js";
+import { Boid } from "./Boid.js";
 let ctx;
 export let canvas;
 let updates = [];
@@ -10,7 +10,6 @@ function init() {
     canvas = document.getElementById("space");
     ctx = canvas.getContext("2d");
     instantiate(new Player());
-    instantiate(new Projectile(new Vector(300, 300), new Vector(0, 0)));
     const flock = new Flock(100, new Vector(600, 400), 100);
     lastTimeStamp = Date.now();
     update();
@@ -50,6 +49,17 @@ function collidesWith(en) {
         }
     }
     return others;
+}
+export function getBoidsOf(flock) {
+    let boids = [];
+    for (let en of updates) {
+        if (en instanceof Boid) {
+            if (en.myFlock === flock) {
+                boids.push(en);
+            }
+        }
+    }
+    return boids;
 }
 function update() {
     clearCanvas();

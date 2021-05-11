@@ -1,22 +1,21 @@
 import { Vector } from "./Entity.js";
 import { Boid } from "./Boid.js";
-import { instantiate } from "./Game.js";
+import { getBoidsOf, instantiate } from "./Game.js";
 export class Flock {
     constructor(amountOfBoids, pos, spray) {
-        this.boids = [];
         for (let i = 0; i < amountOfBoids; i++) {
             const offset = Math.random() * spray;
             const angle = Math.random() * (Math.PI * 2);
             const y = Math.sin(angle) * offset;
             const x = Math.cos(angle) * offset;
             const boid = new Boid(3, Vector.add(new Vector(x, y), pos), Math.random() * (Math.PI * 2), this);
-            this.boids.push(boid);
             instantiate(boid);
         }
     }
     getBoids(pos, dist) {
+        const boids = getBoidsOf(this);
         let visibleBoids = [];
-        for (let boid of this.boids) {
+        for (let boid of boids) {
             if (boid.pos.distanceTo(pos) <= dist) {
                 visibleBoids.push(boid);
             }

@@ -24,7 +24,7 @@ export class Boid extends Enemy {
         this.separation();
         this.loopEdges();
         //this.repelEdges();
-        if (this.mouse !== undefined && this.mouse != null) {
+        if (this.mouse !== undefined && this.mouse !== null) {
             this.moveTowards(this.mouse);
         }
         this.pos.add(this.vel);
