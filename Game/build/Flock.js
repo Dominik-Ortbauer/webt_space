@@ -1,5 +1,6 @@
 import { Vector } from "./Entity.js";
 import { Boid } from "./Boid.js";
+import { instantiate } from "./Game.js";
 export class Flock {
     constructor(amountOfBoids, pos, spray) {
         this.boids = [];
@@ -10,6 +11,7 @@ export class Flock {
             const x = Math.cos(angle) * offset;
             const boid = new Boid(3, Vector.add(new Vector(x, y), pos), Math.random() * (Math.PI * 2), this);
             this.boids.push(boid);
+            instantiate(boid);
         }
     }
     getBoids(pos, dist) {
@@ -20,12 +22,6 @@ export class Flock {
             }
         }
         return visibleBoids;
-    }
-    update(deltaTime) {
-        for (let boid of this.boids) {
-            boid.update(deltaTime);
-            boid.draw();
-        }
     }
 }
 //# sourceMappingURL=Flock.js.map

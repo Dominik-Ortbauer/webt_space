@@ -9,7 +9,7 @@ export class Player extends Entity {
     private shootCooldown = 0;
 
     constructor() {
-        super('U2cZy+.jpg', new Vector(canvas.width/2, canvas.height - 100), 0);
+        super('Spaceship.png', new Vector(canvas.width/2, canvas.height - 100), 0);
 
         document.addEventListener('keydown', (ev)=>{
             this.keysPressed[ev.key] = true;

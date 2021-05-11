@@ -38,7 +38,15 @@ export class Entity {
         ctx.rotate(this.rotation);
         ctx.drawImage(this.img, -this.img.width / 2, -this.img.height / 2);
         ctx.restore();
+        ctx.strokeStyle = 'white';
+        ctx.beginPath();
+        ctx.rect(this.hitbox.leftUpper.x, this.hitbox.leftUpper.y, this.hitbox.rightLower.x - this.hitbox.leftUpper.x, this.hitbox.rightLower.y - this.hitbox.leftUpper.y);
+        ctx.stroke();
     }
+    collides(other) {
+        return this.hitbox.collides(other.hitbox);
+    }
+    onCollision(other) { }
 }
 export class Hitbox {
     constructor(leftUpper, rightLower) {
@@ -53,11 +61,22 @@ export class Hitbox {
         this.leftUpper.moveY(pixel);
         this.rightLower.moveY(pixel);
     }
+    collides(other) {
+        let collides = this.leftUpper.containedIn(other.leftUpper, other.rightLower);
+        collides = collides || this.rightLower.containedIn(other.leftUpper, other.rightLower);
+        collides = collides || other.leftUpper.containedIn(this.leftUpper, this.rightLower);
+        collides = collides || other.rightLower.containedIn(this.leftUpper, this.rightLower);
+        return collides;
+    }
 }
 export class Vector {
     constructor(x, y) {
         this.x = x;
         this.y = y;
+    }
+    containedIn(leftUpper, rightLower) {
+        let collides = this.x >= leftUpper.x && this.x <= rightLower.x;
+        return collides && this.y >= leftUpper.y && this.y <= rightLower.y;
     }
     moveX(pixel) {
         this.x += pixel;
