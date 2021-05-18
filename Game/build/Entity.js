@@ -18,6 +18,17 @@ export class Entity {
         const halfHeight = this.img.height / 2;
         this.hitbox = new Hitbox(new Vector(pos.x - halfWidth, pos.y - halfHeight), new Vector(pos.x + halfWidth, pos.y + halfHeight));
     }
+    getPosition() {
+        const halfWidth = this.img.width / 2;
+        const halfHeight = this.img.height / 2;
+        const middleVector = new Vector(halfWidth, halfHeight);
+        if (this.loaded) {
+            return Vector.add(this.hitbox.leftUpper, middleVector);
+        }
+        else {
+            return new Vector(0, 0);
+        }
+    }
     moveX(pixel) {
         if (!this.loaded)
             return;

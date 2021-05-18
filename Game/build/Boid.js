@@ -1,7 +1,7 @@
 import { Enemy } from "./Enemy.js";
 import { Vector } from "./Entity.js";
 import { Flock } from "./Flock.js";
-import { canvas, destroy } from "./Game.js";
+import { canvas, destroy, player } from "./Game.js";
 import { Player } from "./Player.js";
 export class Boid extends Enemy {
     constructor(health, pos, rotation) {
@@ -10,24 +10,15 @@ export class Boid extends Enemy {
         this.vel = Vector.random();
         this.acc = new Vector(0.0, 0.0);
         this.vel.scale(10);
-        canvas.addEventListener("mousemove", (ev) => {
-            this.mouse = new Vector(ev.clientX, ev.clientY);
-            this.mouse.sub(new Vector(canvas.offsetLeft, canvas.offsetTop));
-        });
-        canvas.addEventListener("mouseleave", (ev) => {
-            this.mouse = null;
-        });
     }
     update(deltaTime) {
         this.acc = new Vector(0, 0);
         this.alignment();
         this.cohesion();
         this.separation();
-        this.loopEdges();
-        //this.repelEdges();
-        if (this.mouse !== undefined && this.mouse !== null) {
-            this.moveTowards(this.mouse);
-        }
+        //this.loopEdges();
+        this.repelEdges();
+        this.moveTowards(player.getPosition());
         this.pos.add(this.vel);
         this.vel.add(this.acc);
         this.vel.limit(Boid.maxSpeed);

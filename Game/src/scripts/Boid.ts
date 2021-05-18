@@ -1,7 +1,7 @@
 import {Enemy} from "./Enemy.js";
 import {Entity, Vector} from "./Entity.js";
 import {Flock} from "./Flock.js";
-import {canvas, destroy} from "./Game.js";
+import {canvas, destroy, player} from "./Game.js";
 import {Player} from "./Player.js";
 
 export class Boid extends Enemy{
@@ -15,20 +15,9 @@ export class Boid extends Enemy{
     private vel: Vector = Vector.random();
     private acc: Vector = new Vector(0.0, 0.0);
 
-    private mouse: Vector;
-
     constructor(health: number, public pos: Vector, rotation: number) {
         super('Boid.png', health, pos, rotation);
         this.vel.scale(10);
-
-        canvas.addEventListener("mousemove", (ev: MouseEvent) => {
-            this.mouse = new Vector(ev.clientX, ev.clientY);
-            this.mouse.sub(new Vector(canvas.offsetLeft, canvas.offsetTop));
-        });
-
-        canvas.addEventListener("mouseleave", (ev: MouseEvent) => {
-            this.mouse = null;
-        });
     }
 
     public update(deltaTime: number): void {
@@ -36,12 +25,10 @@ export class Boid extends Enemy{
         this.alignment();
         this.cohesion();
         this.separation();
-        this.loopEdges();
-        //this.repelEdges();
+        //this.loopEdges();
+        this.repelEdges();
 
-        if(this.mouse !== undefined && this.mouse !== null){
-            this.moveTowards(this.mouse);
-        }
+        this.moveTowards(player.getPosition());
 
         this.pos.add(this.vel);
         this.vel.add(this.acc);

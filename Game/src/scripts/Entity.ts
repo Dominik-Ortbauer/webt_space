@@ -26,6 +26,17 @@ export abstract class Entity implements IUpdate{
         this.hitbox = new Hitbox(new Vector(pos.x - halfWidth, pos.y - halfHeight), new Vector(pos.x + halfWidth, pos.y + halfHeight));
     }
 
+    public getPosition(): Vector{
+        const halfWidth = this.img.width/2;
+        const halfHeight = this.img.height/2;
+        const middleVector = new Vector(halfWidth, halfHeight);
+        if(this.loaded){
+            return Vector.add(this.hitbox.leftUpper, middleVector);
+        }else{
+            return new Vector(0, 0);
+        }
+    }
+
     public moveX(pixel: number): void {
         if(!this.loaded)
             return;

@@ -1,7 +1,6 @@
 import {Entity, IUpdate, Vector} from "./Entity.js";
 import {Player} from "./Player.js";
 import {Flock} from "./Flock.js";
-import {Projectile} from "./Projectile.js";
 import {Boid} from "./Boid.js";
 
 let ctx: CanvasRenderingContext2D;
@@ -12,6 +11,7 @@ let updates: IUpdate[] = [];
 let lastTimeStamp: number = 0;
 
 let currentLevel: number = 0;
+export let player: Player;
 
 function init(): void{
     canvas = <HTMLCanvasElement>document.getElementById("space");
