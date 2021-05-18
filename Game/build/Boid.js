@@ -1,6 +1,7 @@
 import { Enemy } from "./Enemy.js";
 import { Vector } from "./Entity.js";
-import { canvas } from "./Game.js";
+import { canvas, destroy } from "./Game.js";
+import { Player } from "./Player.js";
 export class Boid extends Enemy {
     constructor(health, pos, rotation, myFlock) {
         super('Boid.png', health, pos, rotation);
@@ -149,6 +150,12 @@ export class Boid extends Enemy {
             avg.limit(Boid.maxForce);
         }
         this.acc.add(avg);
+    }
+    onCollision(other) {
+        if (other instanceof Player) {
+            other.takeDamage(10);
+            destroy(this);
+        }
     }
 }
 Boid.lookingDist = 30;

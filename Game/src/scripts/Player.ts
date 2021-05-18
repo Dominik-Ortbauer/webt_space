@@ -1,5 +1,5 @@
 import {Entity, Vector} from './Entity.js'
-import {canvas, instantiate} from './Game.js'
+import {canvas, destroy, gameOver, instantiate} from './Game.js'
 import {Projectile} from "./Projectile.js";
 
 export class Player extends Entity {
@@ -7,6 +7,7 @@ export class Player extends Entity {
     private speed: number = 3;
     private startShootCooldown: number = 1;
     private shootCooldown = 0;
+    private health = 200;
 
     constructor() {
         super('Spaceship.png', new Vector(canvas.width/2, canvas.height - 100), 0);
@@ -50,5 +51,13 @@ export class Player extends Entity {
     private shoot(): void{
         instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Vector(0, -5)));
         this.shootCooldown = this.startShootCooldown;
+    }
+
+    public takeDamage(amount: number): void{
+        this.health -= amount;
+        if(this.health <= 0){
+            destroy(this);
+            gameOver();
+        }
     }
 }
