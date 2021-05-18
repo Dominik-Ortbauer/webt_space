@@ -16,10 +16,12 @@ function init(): void{
     canvas = <HTMLCanvasElement>document.getElementById("space");
     ctx = canvas.getContext("2d");
 
-
-    player = new Player();
-    instantiate(player);
-    const flock: Flock = new Flock(50, new Vector(400, 400), 50);
+    //ctx.fillStyle = '80px arial';
+    //ctx.beginPath();
+    //ctx.fillText('test', 100, 100);
+    //gameOver();
+    instantiate(new Player());
+    const flock: Flock = new Flock(100, new Vector(600, 400), 100);
     lastTimeStamp = Date.now();
     update();
 }
@@ -37,7 +39,7 @@ export function destroy(update: IUpdate){
 }
 
 function clearCanvas(): void{
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = '';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
@@ -71,6 +73,20 @@ function collidesWith(en: Entity): Entity[]{
     return others;
 }
 
+let gameInProgress:boolean = true;
+
+export function gameOver(): void{
+    gameInProgress = false;
+    let img: HTMLImageElement = new Image();
+    img.src = './images/GameOverScreen.png';
+    img.height = 800;
+    img.width = 1200;
+    img.onload = () => {
+        ctx.drawImage(img, 120, 50);
+    }
+    //ctx.fillStyle = '80px';
+    //ctx.beginPath();
+    //this.ctx.fillText('Game Over', 600, 400);
 export function getBoidsOf(flock: Flock): Boid[]{
     let boids: Boid[] = [];
 
@@ -90,7 +106,9 @@ function update(): void{
     updateAllEntities((Date.now() - lastTimeStamp) / 1000);
     lastTimeStamp = Date.now();
 
-    window.requestAnimationFrame(() => update());
+    if(gameInProgress){
+        window.requestAnimationFrame(() => update());
+    }
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {

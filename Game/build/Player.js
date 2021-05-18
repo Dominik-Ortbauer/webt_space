@@ -1,5 +1,5 @@
 import { Entity, Vector } from './Entity.js';
-import { canvas, instantiate } from './Game.js';
+import { canvas, destroy, gameOver, instantiate } from './Game.js';
 import { Projectile } from "./Projectile.js";
 export class Player extends Entity {
     constructor() {
@@ -8,6 +8,7 @@ export class Player extends Entity {
         this.speed = 3;
         this.startShootCooldown = 1;
         this.shootCooldown = 0;
+        this.health = 200;
         document.addEventListener('keydown', (ev) => {
             this.keysPressed[ev.key] = true;
         });
@@ -38,6 +39,13 @@ export class Player extends Entity {
     shoot() {
         instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Vector(0, -5)));
         this.shootCooldown = this.startShootCooldown;
+    }
+    takeDamage(amount) {
+        this.health -= amount;
+        if (this.health <= 0) {
+            destroy(this);
+            gameOver();
+        }
     }
 }
 //# sourceMappingURL=Player.js.map

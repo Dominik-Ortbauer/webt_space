@@ -1,7 +1,8 @@
 import {Enemy} from "./Enemy.js";
-import {Vector} from "./Entity.js";
+import {Entity, Vector} from "./Entity.js";
 import {Flock} from "./Flock.js";
-import {canvas, player} from "./Game.js";
+import {canvas, destroy, player} from "./Game.js";
+import {Player} from "./Player.js";
 
 export class Boid extends Enemy{
     private static readonly lookingDist = 30;
@@ -164,5 +165,12 @@ export class Boid extends Enemy{
         }
 
         this.acc.add(avg);
+    }
+
+    public onCollision(other: Entity) {
+        if(other instanceof Player){
+            other.takeDamage(10);
+            destroy(this);
+        }
     }
 }
