@@ -5,7 +5,7 @@ export class Player extends Entity {
     constructor() {
         super('Spaceship.png', new Vector(canvas.width / 2, canvas.height - 100), 0);
         this.keysPressed = {};
-        this.speed = 3;
+        this.speed = 5;
         this.startShootCooldown = 1;
         this.shootCooldown = 0;
         this.health = 200;
@@ -14,6 +14,15 @@ export class Player extends Entity {
         });
         document.addEventListener('keyup', (ev) => {
             delete this.keysPressed[ev.key];
+        });
+        document.addEventListener('mousedown', (ev) => {
+            this.keysPressed[ev.button] = true;
+        });
+        document.addEventListener('mouseup', (ev) => {
+            delete this.keysPressed[ev.button];
+        });
+        document.addEventListener('mousemove', (ev) => {
+            this.pointToward(Vector.sub(new Vector(ev.clientX, ev.clientY), new Vector(canvas.offsetLeft, canvas.offsetTop)));
         });
     }
     update(deltaTime) {
@@ -26,7 +35,7 @@ export class Player extends Entity {
             this.move(0, 1);
         if (this.keysPressed['d'] && this.hitbox.rightLower.x < canvas.width)
             this.move(1, 0);
-        if (this.keysPressed[' '] && this.shootCooldown <= 0) {
+        if ((this.keysPressed[0] || this.keysPressed[' ']) && this.shootCooldown <= 0) {
             this.shoot();
         }
     }
@@ -37,7 +46,10 @@ export class Player extends Entity {
         super.moveY(y);
     }
     shoot() {
-        instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Vector(0, -5)));
+        const rot = this.rotation - Math.PI / 2;
+        const y = Math.sin(rot);
+        const x = Math.cos(rot);
+        instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Vector(x, y)));
         this.shootCooldown = this.startShootCooldown;
     }
     takeDamage(amount) {

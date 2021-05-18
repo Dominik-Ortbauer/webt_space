@@ -28,7 +28,9 @@ export class Boid extends Enemy{
         //this.loopEdges();
         this.repelEdges();
 
-        this.moveTowards(player.getPosition());
+        if(player !== undefined){
+            this.moveTowards(player.getPosition());
+        }
 
         this.pos.add(this.vel);
         this.vel.add(this.acc);
@@ -40,7 +42,7 @@ export class Boid extends Enemy{
     private moveTowards(pos: Vector): void{
         let force: Vector = Vector.sub(pos, this.pos);
         force.setMagnitude(Boid.maxSpeed);
-        force.limit(Boid.maxForce);
+        force.limit(Boid.maxForce * 2);
         this.acc.add(force);
     }
 

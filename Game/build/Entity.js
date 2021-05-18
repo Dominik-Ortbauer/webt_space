@@ -13,6 +13,10 @@ export class Entity {
             this.loaded = true;
         };
     }
+    pointToward(other) {
+        let dir = Vector.sub(other, this.getPosition());
+        this.rotation = Math.atan2(dir.y, dir.x) + Math.PI / 2;
+    }
     setPosition(pos) {
         const halfWidth = this.img.width / 2;
         const halfHeight = this.img.height / 2;
@@ -140,6 +144,9 @@ export class Vector {
         if (this.magnitude() > value) {
             this.setMagnitude(value);
         }
+    }
+    getAngle() {
+        return Math.atan2(this.y, this.x);
     }
 }
 //# sourceMappingURL=Entity.js.map

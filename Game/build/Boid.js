@@ -1,6 +1,7 @@
 import { Enemy } from "./Enemy.js";
 import { Vector } from "./Entity.js";
-import { canvas, player } from "./Game.js";
+import { canvas, destroy, player } from "./Game.js";
+import { Player } from "./Player.js";
 export class Boid extends Enemy {
     constructor(health, pos, rotation, myFlock) {
         super('Boid.png', health, pos, rotation);
@@ -17,7 +18,9 @@ export class Boid extends Enemy {
         this.separation();
         //this.loopEdges();
         this.repelEdges();
-        this.moveTowards(player.getPosition());
+        if (player !== undefined) {
+            this.moveTowards(player.getPosition());
+        }
         this.pos.add(this.vel);
         this.vel.add(this.acc);
         this.vel.limit(Boid.maxSpeed);
@@ -27,7 +30,7 @@ export class Boid extends Enemy {
     moveTowards(pos) {
         let force = Vector.sub(pos, this.pos);
         force.setMagnitude(Boid.maxSpeed);
-        force.limit(Boid.maxForce);
+        force.limit(Boid.maxForce * 2);
         this.acc.add(force);
     }
     loopEdges() {
@@ -140,6 +143,12 @@ export class Boid extends Enemy {
             avg.limit(Boid.maxForce);
         }
         this.acc.add(avg);
+    }
+    onCollision(other) {
+        if (other instanceof Player) {
+            other.takeDamage(10);
+            destroy(this);
+        }
     }
 }
 Boid.lookingDist = 30;
