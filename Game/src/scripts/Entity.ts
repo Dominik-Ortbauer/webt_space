@@ -3,6 +3,7 @@ export interface IUpdate{
 }
 
 export abstract class Entity implements IUpdate{
+    private readonly showHitboxxes = false;
     protected hitbox: Hitbox;
     readonly img: HTMLImageElement;
     public loaded: boolean = false;
@@ -52,10 +53,13 @@ export abstract class Entity implements IUpdate{
         ctx.drawImage(this.img, -this.img.width/2, -this.img.height/2);
         ctx.restore();
 
-        ctx.strokeStyle = 'white';
-        ctx.beginPath();
-        ctx.rect(this.hitbox.leftUpper.x, this.hitbox.leftUpper.y, this.hitbox.rightLower.x - this.hitbox.leftUpper.x, this.hitbox.rightLower.y - this.hitbox.leftUpper.y);
-        ctx.stroke();
+        if(this.showHitboxxes)
+        {
+            ctx.strokeStyle = 'white';
+            ctx.beginPath();
+            ctx.rect(this.hitbox.leftUpper.x, this.hitbox.leftUpper.y, this.hitbox.rightLower.x - this.hitbox.leftUpper.x, this.hitbox.rightLower.y - this.hitbox.leftUpper.y);
+            ctx.stroke();
+        }
     }
 
     public collides(other: Entity): boolean{

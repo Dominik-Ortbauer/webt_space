@@ -1,6 +1,7 @@
 export class Entity {
     constructor(imgSrc, pos, rotation) {
         this.rotation = rotation;
+        this.showHitboxxes = false;
         this.loaded = false;
         this.img = new Image();
         this.img.src = './Images/' + imgSrc;
@@ -38,10 +39,12 @@ export class Entity {
         ctx.rotate(this.rotation);
         ctx.drawImage(this.img, -this.img.width / 2, -this.img.height / 2);
         ctx.restore();
-        ctx.strokeStyle = 'white';
-        ctx.beginPath();
-        ctx.rect(this.hitbox.leftUpper.x, this.hitbox.leftUpper.y, this.hitbox.rightLower.x - this.hitbox.leftUpper.x, this.hitbox.rightLower.y - this.hitbox.leftUpper.y);
-        ctx.stroke();
+        if (this.showHitboxxes) {
+            ctx.strokeStyle = 'white';
+            ctx.beginPath();
+            ctx.rect(this.hitbox.leftUpper.x, this.hitbox.leftUpper.y, this.hitbox.rightLower.x - this.hitbox.leftUpper.x, this.hitbox.rightLower.y - this.hitbox.leftUpper.y);
+            ctx.stroke();
+        }
     }
     collides(other) {
         return this.hitbox.collides(other.hitbox);

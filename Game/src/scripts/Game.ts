@@ -2,6 +2,7 @@ import {Entity, IUpdate, Vector} from "./Entity.js";
 import {Player} from "./Player.js";
 import {Flock} from "./Flock.js";
 import {Projectile} from "./Projectile.js";
+import {Boid} from "./Boid.js";
 
 let ctx: CanvasRenderingContext2D;
 export let canvas: HTMLCanvasElement;
@@ -19,8 +20,7 @@ function init(): void{
     //ctx.fillText('test', 100, 100);
     //gameOver();
     instantiate(new Player());
-    instantiate(new Projectile(new Vector(300, 300), new Vector(0,0)));
-    const flock: Flock = new Flock(500, new Vector(600, 400), 100);
+    const flock: Flock = new Flock(100, new Vector(600, 400), 100);
     lastTimeStamp = Date.now();
     update();
 }
@@ -86,6 +86,18 @@ export function gameOver(): void{
     //ctx.fillStyle = '80px';
     //ctx.beginPath();
     //this.ctx.fillText('Game Over', 600, 400);
+export function getBoidsOf(flock: Flock): Boid[]{
+    let boids: Boid[] = [];
+
+    for(let en of updates){
+        if(en instanceof Boid){
+            if(en.myFlock === flock){
+                boids.push(en);
+            }
+        }
+    }
+
+    return boids;
 }
 
 function update(): void{
