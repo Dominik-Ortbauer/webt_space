@@ -1,12 +1,12 @@
 import { Enemy } from "./Enemy.js";
 import { Vector } from "./Entity.js";
+import { Flock } from "./Flock.js";
 import { canvas, destroy } from "./Game.js";
 import { Player } from "./Player.js";
 export class Boid extends Enemy {
-    constructor(health, pos, rotation, myFlock) {
+    constructor(health, pos, rotation) {
         super('Boid.png', health, pos, rotation);
         this.pos = pos;
-        this.myFlock = myFlock;
         this.vel = Vector.random();
         this.acc = new Vector(0.0, 0.0);
         this.vel.scale(10);
@@ -97,7 +97,7 @@ export class Boid extends Enemy {
         }
     }
     separation() {
-        const otherBoids = this.myFlock.getBoids(this.pos, Boid.lookingDist);
+        const otherBoids = Flock.getBoids(this.pos, Boid.lookingDist);
         let avg = new Vector(0, 0);
         for (let boid of otherBoids) {
             if (boid != this) {
@@ -117,7 +117,7 @@ export class Boid extends Enemy {
         this.acc.add(avg);
     }
     alignment() {
-        const otherBoids = this.myFlock.getBoids(this.pos, Boid.lookingDist);
+        const otherBoids = Flock.getBoids(this.pos, Boid.lookingDist);
         let avg = new Vector(0.0, 0.0);
         for (let boid of otherBoids) {
             if (boid != this) {
@@ -134,7 +134,7 @@ export class Boid extends Enemy {
         this.acc.add(avg);
     }
     cohesion() {
-        const otherBoids = this.myFlock.getBoids(this.pos, Boid.lookingDist * 2);
+        const otherBoids = Flock.getBoids(this.pos, Boid.lookingDist * 2);
         let avg = new Vector(0.0, 0.0);
         for (let boid of otherBoids) {
             if (boid != this) {

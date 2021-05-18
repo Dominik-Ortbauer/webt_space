@@ -1,11 +1,12 @@
 import { Entity, Vector } from "./Entity.js";
 import { Player } from "./Player.js";
 import { Flock } from "./Flock.js";
-import { Projectile } from "./Projectile.js";
+import { Boid } from "./Boid.js";
 let ctx;
 export let canvas;
 let updates = [];
 let lastTimeStamp = 0;
+let currentLevel = 0;
 function init() {
     canvas = document.getElementById("space");
     ctx = canvas.getContext("2d");
@@ -14,8 +15,7 @@ function init() {
     //ctx.fillText('test', 100, 100);
     //gameOver();
     instantiate(new Player());
-    instantiate(new Projectile(new Vector(300, 300), new Vector(0, 0)));
-    const flock = new Flock(500, new Vector(600, 400), 100);
+    nextLevel();
     lastTimeStamp = Date.now();
     update();
 }
@@ -69,10 +69,26 @@ export function gameOver() {
     //ctx.beginPath();
     //this.ctx.fillText('Game Over', 600, 400);
 }
+export function getBoids() {
+    let boids = [];
+    for (let en of updates) {
+        if (en instanceof Boid) {
+            boids.push(en);
+        }
+    }
+    return boids;
+}
+function nextLevel() {
+    currentLevel++;
+    Flock.createBoids(currentLevel * 100, new Vector(600, 400), 100);
+}
 function update() {
     clearCanvas();
     updateAllEntities((Date.now() - lastTimeStamp) / 1000);
     lastTimeStamp = Date.now();
+    if (getBoids().length == 0) {
+        nextLevel();
+    }
     if (gameInProgress) {
         window.requestAnimationFrame(() => update());
     }

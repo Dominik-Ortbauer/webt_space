@@ -41,7 +41,7 @@ export class Player extends Entity {
         this.shootCooldown = this.startShootCooldown;
     }
     takeDamage(amount) {
-        this.health -= amount;
+        //this.health -= amount;
         if (this.health <= 0) {
             destroy(this);
             gameOver();

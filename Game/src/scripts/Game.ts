@@ -11,6 +11,8 @@ let updates: IUpdate[] = [];
 
 let lastTimeStamp: number = 0;
 
+let currentLevel: number = 0;
+
 function init(): void{
     canvas = <HTMLCanvasElement>document.getElementById("space");
     ctx = canvas.getContext("2d");
@@ -20,7 +22,7 @@ function init(): void{
     //ctx.fillText('test', 100, 100);
     //gameOver();
     instantiate(new Player());
-    const flock: Flock = new Flock(100, new Vector(600, 400), 100);
+    nextLevel();
     lastTimeStamp = Date.now();
     update();
 }
@@ -74,7 +76,7 @@ function collidesWith(en: Entity): Entity[]{
 
 let gameInProgress:boolean = true;
 
-export function gameOver(): void{
+export function gameOver(): void {
     gameInProgress = false;
     let img: HTMLImageElement = new Image();
     img.src = './images/GameOverScreen.png';
@@ -86,24 +88,33 @@ export function gameOver(): void{
     //ctx.fillStyle = '80px';
     //ctx.beginPath();
     //this.ctx.fillText('Game Over', 600, 400);
-export function getBoidsOf(flock: Flock): Boid[]{
+}
+
+export function getBoids(): Boid[]{
     let boids: Boid[] = [];
 
     for(let en of updates){
         if(en instanceof Boid){
-            if(en.myFlock === flock){
-                boids.push(en);
-            }
+            boids.push(en);
         }
     }
 
     return boids;
 }
 
+function nextLevel(): void{
+    currentLevel++;
+    Flock.createBoids(currentLevel * 100, new Vector(600, 400), 100)
+}
+
 function update(): void{
     clearCanvas();
     updateAllEntities((Date.now() - lastTimeStamp) / 1000);
     lastTimeStamp = Date.now();
+
+    if(getBoids().length == 0){
+        nextLevel();
+    }
 
     if(gameInProgress){
         window.requestAnimationFrame(() => update());

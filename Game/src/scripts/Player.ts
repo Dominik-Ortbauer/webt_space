@@ -54,7 +54,7 @@ export class Player extends Entity {
     }
 
     public takeDamage(amount: number): void{
-        this.health -= amount;
+        //this.health -= amount;
         if(this.health <= 0){
             destroy(this);
             gameOver();

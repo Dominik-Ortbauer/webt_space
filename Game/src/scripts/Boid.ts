@@ -17,7 +17,7 @@ export class Boid extends Enemy{
 
     private mouse: Vector;
 
-    constructor(health: number, public pos: Vector, rotation: number, public myFlock: Flock) {
+    constructor(health: number, public pos: Vector, rotation: number) {
         super('Boid.png', health, pos, rotation);
         this.vel.scale(10);
 
@@ -118,7 +118,7 @@ export class Boid extends Enemy{
     }
 
     private separation(): void{
-        const otherBoids: Boid[] = this.myFlock.getBoids(this.pos, Boid.lookingDist);
+        const otherBoids: Boid[] = Flock.getBoids(this.pos, Boid.lookingDist);
         let avg: Vector = new Vector(0, 0);
         for (let boid of otherBoids){
             if(boid != this)
@@ -142,7 +142,7 @@ export class Boid extends Enemy{
     }
 
     private alignment(): void{
-        const otherBoids: Boid[] = this.myFlock.getBoids(this.pos, Boid.lookingDist);
+        const otherBoids: Boid[] = Flock.getBoids(this.pos, Boid.lookingDist);
         let avg = new Vector(0.0, 0.0);
         for(let boid of otherBoids){
             if(boid != this){
@@ -161,7 +161,7 @@ export class Boid extends Enemy{
     }
 
     private cohesion(): void{
-        const otherBoids: Boid[] = this.myFlock.getBoids(this.pos, Boid.lookingDist*2);
+        const otherBoids: Boid[] = Flock.getBoids(this.pos, Boid.lookingDist*2);
         let avg = new Vector(0.0, 0.0);
         for(let boid of otherBoids){
             if(boid != this){
