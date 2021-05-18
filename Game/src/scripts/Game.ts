@@ -1,7 +1,6 @@
 import {Entity, IUpdate, Vector} from "./Entity.js";
 import {Player} from "./Player.js";
 import {Flock} from "./Flock.js";
-import {Projectile} from "./Projectile.js";
 import {Boid} from "./Boid.js";
 
 let ctx: CanvasRenderingContext2D;
@@ -11,13 +10,16 @@ let updates: IUpdate[] = [];
 
 let lastTimeStamp: number = 0;
 
+export let player: Player;
+
 function init(): void{
     canvas = <HTMLCanvasElement>document.getElementById("space");
     ctx = canvas.getContext("2d");
 
 
-    instantiate(new Player());
-    const flock: Flock = new Flock(100, new Vector(600, 400), 100);
+    player = new Player();
+    instantiate(player);
+    const flock: Flock = new Flock(50, new Vector(400, 400), 50);
     lastTimeStamp = Date.now();
     update();
 }

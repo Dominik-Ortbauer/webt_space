@@ -6,11 +6,13 @@ let ctx;
 export let canvas;
 let updates = [];
 let lastTimeStamp = 0;
+export let player;
 function init() {
     canvas = document.getElementById("space");
     ctx = canvas.getContext("2d");
-    instantiate(new Player());
-    const flock = new Flock(100, new Vector(600, 400), 100);
+    player = new Player();
+    instantiate(player);
+    const flock = new Flock(50, new Vector(400, 400), 50);
     lastTimeStamp = Date.now();
     update();
 }
