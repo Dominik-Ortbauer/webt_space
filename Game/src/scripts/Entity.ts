@@ -20,6 +20,11 @@ export abstract class Entity implements IUpdate{
         }
     }
 
+    public pointToward(other: Vector): void{
+        let dir: Vector = Vector.sub(other, this.getPosition());
+        this.rotation = Math.atan2(dir.y, dir.x) + Math.PI/2;
+    }
+
     public setPosition(pos: Vector): void{
         const halfWidth = this.img.width/2;
         const halfHeight = this.img.height/2;
@@ -180,5 +185,9 @@ export class Vector {
         if(this.magnitude() > value){
             this.setMagnitude(value);
         }
+    }
+
+    public getAngle(): number{
+        return Math.atan2(this.y, this.x);
     }
 }

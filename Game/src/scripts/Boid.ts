@@ -1,7 +1,7 @@
 import {Enemy} from "./Enemy.js";
 import {Entity, Vector} from "./Entity.js";
 import {Flock} from "./Flock.js";
-import {canvas, destroy, player} from "./Game.js";
+import {Game} from "./Game.js";
 import {Player} from "./Player.js";
 
 export class Boid extends Enemy{
@@ -28,7 +28,9 @@ export class Boid extends Enemy{
         //this.loopEdges();
         this.repelEdges();
 
-        this.moveTowards(player.getPosition());
+        if(Game.player !== undefined){
+            this.moveTowards(Game.player.getPosition());
+        }
 
         this.pos.add(this.vel);
         this.vel.add(this.acc);
@@ -40,19 +42,19 @@ export class Boid extends Enemy{
     private moveTowards(pos: Vector): void{
         let force: Vector = Vector.sub(pos, this.pos);
         force.setMagnitude(Boid.maxSpeed);
-        force.limit(Boid.maxForce);
+        force.limit(Boid.maxForce * 2);
         this.acc.add(force);
     }
 
     private loopEdges(): void{
         if(this.pos.x < 0){
-            this.pos.x = canvas.width;
-        }if(this.pos.x > canvas.width){
+            this.pos.x = Game.canvas.width;
+        }if(this.pos.x > Game.canvas.width){
             this.pos.x = 0;
         }
         if(this.pos.y < 0){
-            this.pos.y = canvas.height;
-        }if(this.pos.y > canvas.height){
+            this.pos.y = Game.canvas.height;
+        }if(this.pos.y > Game.canvas.height){
             this.pos.y = 0;
         }
     }
@@ -62,7 +64,7 @@ export class Boid extends Enemy{
         const strength = 500;
         let avg: Vector = new Vector(0, 0);
 
-        let d: number = canvas.width - this.pos.x;
+        let d: number = Game.canvas.width - this.pos.x;
         if(d <= see){
             d /= strength;
             avg.add(new Vector(-1 / (d*d), 0));
@@ -74,7 +76,7 @@ export class Boid extends Enemy{
             avg.add(new Vector(1 / (d*d), 0));
         }
 
-        d = canvas.height - this.pos.y;
+        d = Game.canvas.height - this.pos.y;
         if(d <= see){
             d /= strength;
             avg.add(new Vector(0, -1 / (d*d)));
@@ -92,13 +94,13 @@ export class Boid extends Enemy{
         }
         this.acc.add(avg);
 
-        if(this.pos.x > canvas.width){
-            this.pos.x = canvas.width;
+        if(this.pos.x > Game.canvas.width){
+            this.pos.x = Game.canvas.width;
         } else if(this.pos.x < 0){
             this.pos.x = 0;
         }
-        if(this.pos.y > canvas.height){
-            this.pos.y = canvas.height;
+        if(this.pos.y > Game.canvas.height){
+            this.pos.y = Game.canvas.height;
         } else if(this.pos.y < 0){
             this.pos.y = 0;
         }
@@ -170,7 +172,7 @@ export class Boid extends Enemy{
     public onCollision(other: Entity) {
         if(other instanceof Player){
             other.takeDamage(10);
-            destroy(this);
+            Game.destroy(this);
         }
     }
 }

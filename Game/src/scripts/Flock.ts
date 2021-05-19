@@ -1,6 +1,6 @@
 import {IUpdate, Vector} from "./Entity.js";
 import {Boid} from "./Boid.js";
-import {destroy, getBoids, instantiate} from "./Game.js";
+import {Game} from "./Game.js";
 
 export class Flock{
 
@@ -14,12 +14,12 @@ export class Flock{
             const x = Math.cos(angle) * offset;
 
             const boid: Boid = new Boid(3, Vector.add(new Vector(x, y), pos), Math.random() * (Math.PI * 2));
-            instantiate(boid);
+            Game.instantiate(boid);
         }
     }
 
     public static getBoids(pos: Vector, dist: number): Boid[]{
-        const boids = getBoids();
+        const boids = Game.getBoids();
         let visibleBoids = [];
 
         for(let boid of boids){
