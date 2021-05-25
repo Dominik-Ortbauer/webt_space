@@ -14,7 +14,7 @@ export class Game {
         }
     }
     static clearCanvas() {
-        this.ctx.fillStyle = '';
+        this.ctx.fillStyle = 'black';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
     static updateAllEntities(deltaTime) {
@@ -33,7 +33,7 @@ export class Game {
         let others = [];
         for (let up of this.updates) {
             if (up instanceof Entity) {
-                if (en.loaded && up.loaded && en != up && en.collides(up)) {
+                if (en.collides(up)) {
                     others.push(up);
                 }
             }
@@ -86,12 +86,9 @@ function init() {
     Powerup.init();
     Game.canvas = document.getElementById("space");
     Game.ctx = Game.canvas.getContext("2d");
-    //ctx.fillStyle = '80px arial';
-    //ctx.beginPath();
-    //ctx.fillText('test', 100, 100);
-    //gameOver();
     Game.player = new Player();
-    Game.player.addPowerup(Powerup.powerups[0]);
+    //Game.player.addPowerup(Powerup.powerups[0].copy());
+    Game.player.addPowerup(Powerup.powerups[1].copy());
     Game.instantiate(Game.player);
     Game.nextLevel();
     Game.lastTimeStamp = Date.now();

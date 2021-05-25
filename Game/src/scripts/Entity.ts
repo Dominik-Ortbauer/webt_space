@@ -4,11 +4,15 @@ export interface IUpdate{
 
 export abstract class Entity implements IUpdate{
     private readonly showHitboxxes = false;
-    protected hitbox: Hitbox;
+    hitbox: Hitbox;
     readonly img: HTMLImageElement;
     public loaded: boolean = false;
 
     protected constructor(imgSrc: string, pos: Vector, protected rotation: number) {
+        if(imgSrc === null){
+            return;
+        }
+
         this.img = new Image();
         this.img.src = './Images/' + imgSrc;
         this.img.onload = () => {
@@ -61,8 +65,9 @@ export abstract class Entity implements IUpdate{
     }
 
     public draw(): void {
-        if(!this.loaded)
+        if(!this.loaded){
             return;
+        }
 
         const canvas = <HTMLCanvasElement>document.getElementById("space");
         const ctx = canvas.getContext("2d");
@@ -83,7 +88,13 @@ export abstract class Entity implements IUpdate{
     }
 
     public collides(other: Entity): boolean{
-        return this.hitbox.collides(other.hitbox);
+        if(!this.loaded || !other.loaded){
+            return;
+        }
+
+        if(other.hitbox !== undefined){
+            return this.hitbox.collides(other.hitbox);
+        }
     }
 
     public abstract update(deltaTime: number): void;

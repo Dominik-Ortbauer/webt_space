@@ -3,6 +3,9 @@ export class Entity {
         this.rotation = rotation;
         this.showHitboxxes = false;
         this.loaded = false;
+        if (imgSrc === null) {
+            return;
+        }
         this.img = new Image();
         this.img.src = './Images/' + imgSrc;
         this.img.onload = () => {
@@ -47,8 +50,9 @@ export class Entity {
         this.hitbox.moveY(pixel);
     }
     draw() {
-        if (!this.loaded)
+        if (!this.loaded) {
             return;
+        }
         const canvas = document.getElementById("space");
         const ctx = canvas.getContext("2d");
         const middle = this.hitbox.leftUpper.middle(this.hitbox.rightLower);
@@ -65,7 +69,12 @@ export class Entity {
         }
     }
     collides(other) {
-        return this.hitbox.collides(other.hitbox);
+        if (!this.loaded || !other.loaded) {
+            return;
+        }
+        if (other.hitbox !== undefined) {
+            return this.hitbox.collides(other.hitbox);
+        }
     }
     onCollision(other) { }
 }
