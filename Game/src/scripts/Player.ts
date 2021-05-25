@@ -1,6 +1,7 @@
 import {Entity, Vector} from './Entity.js'
 import {Game} from './Game.js'
 import {Projectile} from "./Projectile.js";
+import {Powerup} from "./Powerups.js";
 
 export class Player extends Entity {
     private keysPressed = {};
@@ -8,6 +9,7 @@ export class Player extends Entity {
     private startShootCooldown: number = 1;
     private shootCooldown = 0;
     private health = 200;
+    private powerups: Powerup[] = [];
 
     constructor() {
         super('Spaceship.png', new Vector(Game.canvas.width/2, Game.canvas.height - 100), 0);
@@ -53,6 +55,10 @@ export class Player extends Entity {
         }
     }
 
+    public addPowerup(powerup: Powerup): void{
+        this.powerups.push(powerup);
+    }
+
     private move(x: number, y: number): void{
         x *= this.speed;
         y *= this.speed;
@@ -67,6 +73,10 @@ export class Player extends Entity {
 
         Game.instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Vector(x, y)));
         this.shootCooldown = this.startShootCooldown;
+
+        for(let p of this.powerups){
+            p.onShoot(this);
+        }
     }
 
     public takeDamage(amount: number): void{

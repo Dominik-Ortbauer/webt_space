@@ -22,6 +22,9 @@ export class Entity {
         const halfHeight = this.img.height / 2;
         this.hitbox = new Hitbox(new Vector(pos.x - halfWidth, pos.y - halfHeight), new Vector(pos.x + halfWidth, pos.y + halfHeight));
     }
+    getRotation() {
+        return this.rotation;
+    }
     getPosition() {
         const halfWidth = this.img.width / 2;
         const halfHeight = this.img.height / 2;
@@ -103,7 +106,7 @@ export class Vector {
         this.y += pixel;
     }
     middle(other) {
-        return new Vector((this.x + other.x) / 2, (this.y + other.y) / 2);
+        return Vector.add(this, other).div(2);
     }
     static add(v1, v2) {
         return new Vector(v1.x + v2.x, v1.y + v2.y);
@@ -122,6 +125,7 @@ export class Vector {
     div(value) {
         this.x /= value;
         this.y /= value;
+        return this;
     }
     scale(value) {
         this.x *= value;

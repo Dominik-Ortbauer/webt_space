@@ -2,6 +2,7 @@ import { Entity, Vector } from "./Entity.js";
 import { Player } from "./Player.js";
 import { Flock } from "./Flock.js";
 import { Boid } from "./Boid.js";
+import { Powerup } from "./Powerups.js";
 export class Game {
     static instantiate(update) {
         this.updates.push(update);
@@ -70,7 +71,7 @@ export class Game {
         Game.updateAllEntities((Date.now() - this.lastTimeStamp) / 1000);
         this.lastTimeStamp = Date.now();
         if (Game.getBoids().length == 0) {
-            Game.nextLevel();
+            //Game.nextLevel();
         }
         if (Game.gameInProgress) {
             window.requestAnimationFrame(() => update());
@@ -82,6 +83,7 @@ Game.lastTimeStamp = 0;
 Game.currentLevel = 0;
 Game.gameInProgress = true;
 function init() {
+    Powerup.init();
     Game.canvas = document.getElementById("space");
     Game.ctx = Game.canvas.getContext("2d");
     //ctx.fillStyle = '80px arial';
@@ -89,6 +91,7 @@ function init() {
     //ctx.fillText('test', 100, 100);
     //gameOver();
     Game.player = new Player();
+    Game.player.addPowerup(Powerup.powerups[0]);
     Game.instantiate(Game.player);
     Game.nextLevel();
     Game.lastTimeStamp = Date.now();
@@ -99,7 +102,7 @@ function update() {
     Game.updateAllEntities((Date.now() - Game.lastTimeStamp) / 1000);
     Game.lastTimeStamp = Date.now();
     if (Game.getBoids().length == 0) {
-        Game.nextLevel();
+        //Game.nextLevel();
     }
     if (Game.gameInProgress) {
         window.requestAnimationFrame(() => update());

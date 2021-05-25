@@ -9,6 +9,7 @@ export class Player extends Entity {
         this.startShootCooldown = 1;
         this.shootCooldown = 0;
         this.health = 200;
+        this.powerups = [];
         document.addEventListener('keydown', (ev) => {
             this.keysPressed[ev.key] = true;
         });
@@ -39,6 +40,9 @@ export class Player extends Entity {
             this.shoot();
         }
     }
+    addPowerup(powerup) {
+        this.powerups.push(powerup);
+    }
     move(x, y) {
         x *= this.speed;
         y *= this.speed;
@@ -51,6 +55,9 @@ export class Player extends Entity {
         const x = Math.cos(rot);
         Game.instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Vector(x, y)));
         this.shootCooldown = this.startShootCooldown;
+        for (let p of this.powerups) {
+            p.onShoot(this);
+        }
     }
     takeDamage(amount) {
         //this.health -= amount;

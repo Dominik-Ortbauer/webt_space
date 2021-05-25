@@ -31,6 +31,10 @@ export abstract class Entity implements IUpdate{
         this.hitbox = new Hitbox(new Vector(pos.x - halfWidth, pos.y - halfHeight), new Vector(pos.x + halfWidth, pos.y + halfHeight));
     }
 
+    public getRotation(): number{
+        return this.rotation;
+    }
+
     public getPosition(): Vector{
         const halfWidth = this.img.width/2;
         const halfHeight = this.img.height/2;
@@ -132,7 +136,7 @@ export class Vector {
     }
 
     public middle(other: Vector): Vector {
-        return new Vector((this.x + other.x) / 2, (this.y + other.y) / 2);
+        return Vector.add(this, other).div(2);
     }
 
     public static add(v1: Vector, v2: Vector): Vector{
@@ -148,14 +152,15 @@ export class Vector {
         return new Vector(v1.x - v2.x, v1.y - v2.y);
     }
 
-    public sub(other: Vector): void{
+    public sub(other: Vector): void {
         this.x -= other.x;
         this.y -= other.y;
     }
 
-    public div(value: number): void{
+    public div(value: number): Vector{
         this.x /= value;
         this.y /= value;
+        return this;
     }
 
     public scale(value: number): void{

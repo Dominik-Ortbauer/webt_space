@@ -2,6 +2,7 @@ import {Entity, IUpdate, Vector} from "./Entity.js";
 import {Player} from "./Player.js";
 import {Flock} from "./Flock.js";
 import {Boid} from "./Boid.js";
+import {Powerup} from "./Powerups.js";
 
 export class Game{
     public static ctx: CanvasRenderingContext2D;
@@ -100,7 +101,7 @@ export class Game{
         this.lastTimeStamp = Date.now();
 
         if(Game.getBoids().length == 0){
-            Game.nextLevel();
+            //Game.nextLevel();
         }
 
         if(Game.gameInProgress){
@@ -109,9 +110,8 @@ export class Game{
     }
 }
 
-
-
 function init(): void{
+    Powerup.init();
     Game.canvas = <HTMLCanvasElement>document.getElementById("space");
     Game.ctx = Game.canvas.getContext("2d");
 
@@ -120,6 +120,7 @@ function init(): void{
     //ctx.fillText('test', 100, 100);
     //gameOver();
     Game.player = new Player();
+    Game.player.addPowerup(Powerup.powerups[0]);
     Game.instantiate(Game.player);
     Game.nextLevel();
     Game.lastTimeStamp = Date.now();
@@ -132,7 +133,7 @@ function update(): void{
     Game.lastTimeStamp = Date.now();
 
     if(Game.getBoids().length == 0){
-        Game.nextLevel();
+        //Game.nextLevel();
     }
 
     if(Game.gameInProgress){
