@@ -2,6 +2,7 @@ import { Entity, Vector } from "./Entity.js";
 import { Player } from "./Player.js";
 import { Flock } from "./Flock.js";
 import { Boid } from "./Boid.js";
+import { WormHole } from "./Enemy.js";
 import { Powerup } from "./Powerups.js";
 export class Game {
     static instantiate(update) {
@@ -62,20 +63,17 @@ export class Game {
         }
         return boids;
     }
+    static createWormholes(amount) {
+        for (let i = 0; i < amount; i++) {
+            Game.instantiate(new WormHole("WormHole.png", 12, Vector.randomPos(), 0));
+        }
+    }
     static nextLevel() {
         this.currentLevel++;
         Flock.createBoids(this.currentLevel * 100, new Vector(600, 400), 100);
     }
-    static update() {
-        Game.clearCanvas();
-        Game.updateAllEntities((Date.now() - this.lastTimeStamp) / 1000);
-        this.lastTimeStamp = Date.now();
-        if (Game.getBoids().length == 0) {
-            //Game.nextLevel();
-        }
-        if (Game.gameInProgress) {
-            window.requestAnimationFrame(() => update());
-        }
+    static pressPause() {
+        this.gameIsPaused = !this.gameIsPaused;
     }
     static drawHud() {
         this.player.drawHud();
@@ -92,10 +90,14 @@ Game.updates = [];
 Game.lastTimeStamp = 0;
 Game.currentLevel = 0;
 Game.gameInProgress = true;
+Game.gameIsPaused = false;
 function init() {
     Powerup.init();
     Game.canvas = document.getElementById("space");
     Game.ctx = Game.canvas.getContext("2d");
+    document.getElementById("pause").addEventListener("click", () => {
+        Game.pressPause();
+    });
     Game.player = new Player();
     Game.player.addPowerup(Powerup.powerups[1].copy());
     Game.player.addPowerup(Powerup.powerups[2].copy());
@@ -111,12 +113,15 @@ function update() {
     Game.updateAllEntities((Date.now() - Game.lastTimeStamp) / 1000);
     Game.drawHud();
     Game.lastTimeStamp = Date.now();
-    if (Game.getBoids().length == 0) {
-        //Game.nextLevel();
+    if (Game.gameInProgress && !Game.gameIsPaused) {
+        Game.clearCanvas();
+        Game.updateAllEntities((Date.now() - Game.lastTimeStamp) / 1000);
+        Game.lastTimeStamp = Date.now();
+        if (Game.getBoids().length == 0) {
+            Game.nextLevel();
+        }
     }
-    if (Game.gameInProgress) {
-        window.requestAnimationFrame(() => update());
-    }
+    window.requestAnimationFrame(() => update());
 }
 document.addEventListener('DOMContentLoaded', (event) => {
     init();
