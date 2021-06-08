@@ -134,6 +134,9 @@ export class Vector {
         const angle = Math.random() * Math.PI * 2;
         return new Vector(Math.cos(angle), Math.sin(angle));
     }
+    static randomPos() {
+        return new Vector(Math.random() % 1200, Math.random() % 800);
+    }
     magnitude() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }

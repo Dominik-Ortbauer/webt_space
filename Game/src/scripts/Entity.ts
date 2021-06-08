@@ -173,6 +173,10 @@ export class Vector {
         return new Vector(Math.cos(angle), Math.sin(angle));
     }
 
+    public static randomPos(): Vector{
+        return new Vector(Math.random() % 1200, Math.random() % 800);
+    }
+
     public magnitude(): number{
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
