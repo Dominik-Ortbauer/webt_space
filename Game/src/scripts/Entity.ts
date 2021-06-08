@@ -190,7 +190,7 @@ export class Vector {
     }
 
     public static randomPos(): Vector{
-        return new Vector(Math.random() % 1200, Math.random() % 800);
+        return new Vector(Math.random() * 1200, Math.random() * 800);
     }
 
     public magnitude(): number{

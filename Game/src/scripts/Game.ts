@@ -2,8 +2,7 @@ import {Entity, IUpdate, Vector} from "./Entity.js";
 import {Player} from "./Player.js";
 import {Flock} from "./Flock.js";
 import {Boid} from "./Boid.js";
-import {WormHole} from "./Enemy.js";
-import instantiate = WebAssembly.instantiate;
+import {WormHole} from "./WormHole.js";
 import {Powerup} from "./Powerups.js";
 
 export class Game{
@@ -100,7 +99,8 @@ export class Game{
 
     public static nextLevel(): void{
         this.currentLevel++;
-        Flock.createBoids(this.currentLevel * 100, new Vector(600, 400), 100)
+        Flock.createBoids(this.currentLevel * 100, new Vector(600, 400), 100);
+        this.createWormholes(5);
     }
 
     public static gameIsPaused = false;

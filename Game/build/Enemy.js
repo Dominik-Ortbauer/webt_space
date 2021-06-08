@@ -15,22 +15,4 @@ export class Enemy extends Entity {
         }
     }
 }
-export class WormHole extends Enemy {
-    constructor(imgSrc, health, pos, rotation) {
-        super(imgSrc, health, pos, rotation);
-        this.health = health;
-        this.startCooldown = 1;
-        this.spwanCooldown = 1;
-    }
-    update(deltaTime) {
-        this.spwanCooldown -= deltaTime;
-        if (this.spwanCooldown == 0) {
-            this.spawnEnemy();
-            this.spwanCooldown = this.startCooldown;
-        }
-    }
-    spawnEnemy() {
-        //Game.instantiate(new Boid(3, this.getPosition(), 0));
-    }
-}
 //# sourceMappingURL=Enemy.js.map

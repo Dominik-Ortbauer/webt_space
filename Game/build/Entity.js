@@ -148,7 +148,7 @@ export class Vector {
         return new Vector(Math.cos(angle), Math.sin(angle));
     }
     static randomPos() {
-        return new Vector(Math.random() % 1200, Math.random() % 800);
+        return new Vector(Math.random() * 1200, Math.random() * 800);
     }
     magnitude() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
