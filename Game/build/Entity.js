@@ -3,6 +3,9 @@ export class Entity {
         this.rotation = rotation;
         this.showHitboxxes = false;
         this.loaded = false;
+        if (imgSrc === null) {
+            return;
+        }
         this.img = new Image();
         this.img.src = './Images/' + imgSrc;
         this.img.onload = () => {
@@ -21,6 +24,9 @@ export class Entity {
         const halfWidth = this.img.width / 2;
         const halfHeight = this.img.height / 2;
         this.hitbox = new Hitbox(new Vector(pos.x - halfWidth, pos.y - halfHeight), new Vector(pos.x + halfWidth, pos.y + halfHeight));
+    }
+    getRotation() {
+        return this.rotation;
     }
     getPosition() {
         const halfWidth = this.img.width / 2;
@@ -44,8 +50,9 @@ export class Entity {
         this.hitbox.moveY(pixel);
     }
     draw() {
-        if (!this.loaded)
+        if (!this.loaded) {
             return;
+        }
         const canvas = document.getElementById("space");
         const ctx = canvas.getContext("2d");
         const middle = this.hitbox.leftUpper.middle(this.hitbox.rightLower);
@@ -62,7 +69,12 @@ export class Entity {
         }
     }
     collides(other) {
-        return this.hitbox.collides(other.hitbox);
+        if (!this.loaded || !other.loaded) {
+            return;
+        }
+        if (other.hitbox !== undefined) {
+            return this.hitbox.collides(other.hitbox);
+        }
     }
     onCollision(other) { }
 }
@@ -103,7 +115,7 @@ export class Vector {
         this.y += pixel;
     }
     middle(other) {
-        return new Vector((this.x + other.x) / 2, (this.y + other.y) / 2);
+        return Vector.add(this, other).div(2);
     }
     static add(v1, v2) {
         return new Vector(v1.x + v2.x, v1.y + v2.y);
@@ -122,6 +134,7 @@ export class Vector {
     div(value) {
         this.x /= value;
         this.y /= value;
+        return this;
     }
     scale(value) {
         this.x *= value;

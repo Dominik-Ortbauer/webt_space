@@ -4,11 +4,15 @@ export interface IUpdate{
 
 export abstract class Entity implements IUpdate{
     private readonly showHitboxxes = false;
-    protected hitbox: Hitbox;
+    hitbox: Hitbox;
     readonly img: HTMLImageElement;
     public loaded: boolean = false;
 
     protected constructor(imgSrc: string, pos: Vector, protected rotation: number) {
+        if(imgSrc === null){
+            return;
+        }
+
         this.img = new Image();
         this.img.src = './Images/' + imgSrc;
         this.img.onload = () => {
@@ -29,6 +33,10 @@ export abstract class Entity implements IUpdate{
         const halfWidth = this.img.width/2;
         const halfHeight = this.img.height/2;
         this.hitbox = new Hitbox(new Vector(pos.x - halfWidth, pos.y - halfHeight), new Vector(pos.x + halfWidth, pos.y + halfHeight));
+    }
+
+    public getRotation(): number{
+        return this.rotation;
     }
 
     public getPosition(): Vector{
@@ -57,8 +65,9 @@ export abstract class Entity implements IUpdate{
     }
 
     public draw(): void {
-        if(!this.loaded)
+        if(!this.loaded){
             return;
+        }
 
         const canvas = <HTMLCanvasElement>document.getElementById("space");
         const ctx = canvas.getContext("2d");
@@ -79,7 +88,13 @@ export abstract class Entity implements IUpdate{
     }
 
     public collides(other: Entity): boolean{
-        return this.hitbox.collides(other.hitbox);
+        if(!this.loaded || !other.loaded){
+            return;
+        }
+
+        if(other.hitbox !== undefined){
+            return this.hitbox.collides(other.hitbox);
+        }
     }
 
     public abstract update(deltaTime: number): void;
@@ -132,7 +147,7 @@ export class Vector {
     }
 
     public middle(other: Vector): Vector {
-        return new Vector((this.x + other.x) / 2, (this.y + other.y) / 2);
+        return Vector.add(this, other).div(2);
     }
 
     public static add(v1: Vector, v2: Vector): Vector{
@@ -148,14 +163,15 @@ export class Vector {
         return new Vector(v1.x - v2.x, v1.y - v2.y);
     }
 
-    public sub(other: Vector): void{
+    public sub(other: Vector): void {
         this.x -= other.x;
         this.y -= other.y;
     }
 
-    public div(value: number): void{
+    public div(value: number): Vector{
         this.x /= value;
         this.y /= value;
+        return this;
     }
 
     public scale(value: number): void{
