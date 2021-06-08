@@ -77,6 +77,16 @@ export class Game {
             window.requestAnimationFrame(() => update());
         }
     }
+    static drawHud() {
+        this.player.drawHud();
+    }
+    static drawBar(maxLength, length, width, height, x, y, fill, outline) {
+        Game.ctx.lineWidth = 1;
+        Game.ctx.strokeStyle = outline;
+        Game.ctx.strokeRect(x - 1, y - 1, width + 2, height + 2);
+        Game.ctx.fillStyle = fill;
+        Game.ctx.fillRect(x, y, (length / maxLength) * width, height);
+    }
 }
 Game.updates = [];
 Game.lastTimeStamp = 0;
@@ -87,8 +97,10 @@ function init() {
     Game.canvas = document.getElementById("space");
     Game.ctx = Game.canvas.getContext("2d");
     Game.player = new Player();
-    //Game.player.addPowerup(Powerup.powerups[0].copy());
     Game.player.addPowerup(Powerup.powerups[1].copy());
+    Game.player.addPowerup(Powerup.powerups[2].copy());
+    Game.player.addPowerup(Powerup.powerups[2].copy());
+    Game.player.addPowerup(Powerup.powerups[2].copy());
     Game.instantiate(Game.player);
     Game.nextLevel();
     Game.lastTimeStamp = Date.now();
@@ -97,6 +109,7 @@ function init() {
 function update() {
     Game.clearCanvas();
     Game.updateAllEntities((Date.now() - Game.lastTimeStamp) / 1000);
+    Game.drawHud();
     Game.lastTimeStamp = Date.now();
     if (Game.getBoids().length == 0) {
         //Game.nextLevel();

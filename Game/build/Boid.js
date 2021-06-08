@@ -29,8 +29,8 @@ export class Boid extends Enemy {
     }
     moveTowards(pos) {
         let force = Vector.sub(pos, this.pos);
-        force.setMagnitude(Boid.maxSpeed);
-        force.limit(Boid.maxForce * 2);
+        force.scale(Boid.maxSpeed);
+        force.limit(Boid.maxForce);
         this.acc.add(force);
     }
     loopEdges() {

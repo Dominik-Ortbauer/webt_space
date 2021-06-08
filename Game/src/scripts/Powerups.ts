@@ -10,10 +10,13 @@ export abstract class Powerup {
         //add in instance of each subclass to powerups array
         this.powerups.push(new Multishot());
         this.powerups.push(new LaserShot());
+        this.powerups.push(new FasterReload());
+        this.powerups.push(new LaserHell());
     }
 
     public abstract copy(): Powerup;
     public abstract onShoot(player: Player): void;
+    public abstract onUpdate(player: Player, deltaTime: number): void;
 }
 
 class Multishot extends Powerup{
@@ -30,6 +33,8 @@ class Multishot extends Powerup{
 
         Game.instantiate(new Projectile(player.getPosition(), new Vector(x, y)));
     }
+
+    public onUpdate(player: Player, deltaTime: number) {}
 }
 
 class LaserShot extends Powerup{
@@ -39,6 +44,49 @@ class LaserShot extends Powerup{
 
     public onShoot(player: Player): void{
         let rot = player.getRotation() - Math.PI / 2;
+        const y = Math.sin(rot);
+        const x = Math.cos(rot);
+        let target: Vector = new Vector(x, y);
+        target.setMagnitude(2000);
+        target.add(player.getPosition());
+
+        Game.instantiate(new Laser(player.getPosition(), target));
+    }
+
+    public onUpdate(player: Player, deltaTime: number) {}
+}
+
+class FasterReload extends Powerup{
+    public copy(): Powerup{
+        return new FasterReload();
+    }
+
+    public onShoot(player: Player) {}
+
+    public onUpdate(player: Player, deltaTime: number) {
+        if(player.shootCooldown > 0){
+            player.shootCooldown -= deltaTime;
+        }
+    }
+}
+
+class LaserHell extends Powerup{
+    private liveTime = 10;
+
+    public copy(): Powerup{
+        return new LaserHell();
+    }
+
+    public onShoot(player: Player) {}
+
+    public onUpdate(player: Player, deltaTime: number) {
+        if(this.liveTime <= 0){
+            player.removePowerup(this);
+        }
+
+        this.liveTime -= deltaTime;
+
+        let rot = Math.random() * Math.PI * 2;
         const y = Math.sin(rot);
         const x = Math.cos(rot);
         let target: Vector = new Vector(x, y);

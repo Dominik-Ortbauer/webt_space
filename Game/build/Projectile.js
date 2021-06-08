@@ -32,6 +32,7 @@ export class Laser extends Entity {
         this.startPos = startPos;
         this.endPos = endPos;
         this.cooldown = 0.5;
+        this.alreadyHit = [];
         this.angle = Vector.sub(this.endPos, this.startPos).getAngle();
         console.log(this.angle);
     }
@@ -67,8 +68,9 @@ export class Laser extends Entity {
         return false;
     }
     onCollision(other) {
-        if (other instanceof Enemy) {
+        if (other instanceof Enemy && this.alreadyHit.indexOf(other) == -1) {
             other.takeDamage(1);
+            this.alreadyHit.push(other);
         }
     }
 }
