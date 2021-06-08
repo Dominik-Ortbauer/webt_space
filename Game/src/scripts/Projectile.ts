@@ -39,7 +39,6 @@ export class Laser extends Entity{
     constructor(private readonly startPos: Vector, private readonly endPos: Vector) {
         super(null, startPos, 0);
         this.angle = Vector.sub(this.endPos, this.startPos).getAngle();
-        console.log(this.angle);
     }
 
     public update(deltaTime: number): void{

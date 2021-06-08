@@ -109,13 +109,10 @@ function init() {
     update();
 }
 function update() {
-    Game.clearCanvas();
-    Game.updateAllEntities((Date.now() - Game.lastTimeStamp) / 1000);
-    Game.drawHud();
-    Game.lastTimeStamp = Date.now();
     if (Game.gameInProgress && !Game.gameIsPaused) {
         Game.clearCanvas();
         Game.updateAllEntities((Date.now() - Game.lastTimeStamp) / 1000);
+        Game.drawHud();
         Game.lastTimeStamp = Date.now();
         if (Game.getBoids().length == 0) {
             Game.nextLevel();

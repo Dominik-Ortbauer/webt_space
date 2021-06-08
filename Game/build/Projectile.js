@@ -34,7 +34,6 @@ export class Laser extends Entity {
         this.cooldown = 0.5;
         this.alreadyHit = [];
         this.angle = Vector.sub(this.endPos, this.startPos).getAngle();
-        console.log(this.angle);
     }
     update(deltaTime) {
         if (this.cooldown <= 0) {

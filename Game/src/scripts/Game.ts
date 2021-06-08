@@ -3,7 +3,6 @@ import {Player} from "./Player.js";
 import {Flock} from "./Flock.js";
 import {Boid} from "./Boid.js";
 import {WormHole} from "./Enemy.js";
-import instantiate = WebAssembly.instantiate;
 import {Powerup} from "./Powerups.js";
 
 export class Game{
@@ -144,14 +143,10 @@ function init(): void{
 }
 
 function update(): void{
-    Game.clearCanvas();
-    Game.updateAllEntities((Date.now() - Game.lastTimeStamp) / 1000);
-    Game.drawHud();
-    Game.lastTimeStamp = Date.now();
-
     if(Game.gameInProgress && !Game.gameIsPaused) {
         Game.clearCanvas();
         Game.updateAllEntities((Date.now() - Game.lastTimeStamp) / 1000);
+        Game.drawHud();
         Game.lastTimeStamp = Date.now();
 
         if (Game.getBoids().length == 0) {
