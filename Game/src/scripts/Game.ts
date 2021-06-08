@@ -100,7 +100,7 @@ export class Game{
     public static nextLevel(): void{
         this.currentLevel++;
         Flock.createBoids(this.currentLevel * 100, new Vector(600, 400), 100);
-        this.createWormholes(5);
+        this.createWormholes(this.currentLevel);
     }
 
     public static gameIsPaused = false;
