@@ -36,6 +36,6 @@ export class WormHole extends Enemy{
     }
 
     private spawnEnemy(): void{
-        Game.instantiate(new Boid(3, this.getPosition(), 0));
+        //Game.instantiate(new Boid(3, this.getPosition(), 0));
     }
 }

@@ -104,14 +104,6 @@ export class Game{
     }
 
     public static gameIsPaused = false;
-    private static update(): void{
-        Game.clearCanvas();
-        Game.updateAllEntities((Date.now() - this.lastTimeStamp) / 1000);
-        this.lastTimeStamp = Date.now();
-
-        if(Game.getBoids().length == 0){
-            //Game.nextLevel();
-        }
 
     public static pressPause(): void{
         this.gameIsPaused = !this.gameIsPaused;

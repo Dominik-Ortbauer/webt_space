@@ -1,6 +1,5 @@
 import { Entity } from "./Entity.js";
 import { Game } from "./Game.js";
-import { Boid } from "./Boid.js";
 export class Enemy extends Entity {
     constructor(imgSrc, health, pos, rotation) {
         super(imgSrc, pos, rotation);
@@ -31,7 +30,7 @@ export class WormHole extends Enemy {
         }
     }
     spawnEnemy() {
-        Game.instantiate(new Boid(3, this.getPosition(), 0));
+        //Game.instantiate(new Boid(3, this.getPosition(), 0));
     }
 }
 //# sourceMappingURL=Enemy.js.map
