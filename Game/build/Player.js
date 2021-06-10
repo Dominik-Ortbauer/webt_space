@@ -1,6 +1,5 @@
 import { Entity, Vector } from './Entity.js';
 import { Game } from './Game.js';
-import { Projectile } from "./Projectile.js";
 export class Player extends Entity {
     constructor() {
         super('Spaceship.png', new Vector(Game.canvas.width / 2, Game.canvas.height - 100), 0);
@@ -8,6 +7,7 @@ export class Player extends Entity {
         this.speed = 5;
         this.startShootCooldown = 1;
         this.shootCooldown = 0;
+        this.maxHealth = 200;
         this.health = 200;
         this.powerups = [];
         document.addEventListener('keydown', (ev) => {
@@ -27,7 +27,12 @@ export class Player extends Entity {
         });
     }
     update(deltaTime) {
-        this.shootCooldown -= deltaTime;
+        if (this.shootCooldown > 0) {
+            this.shootCooldown -= deltaTime;
+        }
+        for (let pow of this.powerups) {
+            pow.onUpdate(this, deltaTime);
+        }
         if (this.keysPressed['w'] && this.hitbox.leftUpper.y > 0)
             this.move(0, -1);
         if (this.keysPressed['a'] && this.hitbox.leftUpper.x > 0)
@@ -40,8 +45,18 @@ export class Player extends Entity {
             this.shoot();
         }
     }
+    drawHud() {
+        Game.drawBar(this.maxHealth, this.health, 400, 20, 20, 20, 'red', 'white');
+        Game.drawBar(this.startShootCooldown, this.startShootCooldown - this.shootCooldown, 200, 20, 20, 60, 'green', 'white');
+    }
     addPowerup(powerup) {
         this.powerups.push(powerup);
+    }
+    removePowerup(powerup) {
+        let idx = this.powerups.indexOf(powerup);
+        if (idx >= 0) {
+            this.powerups.splice(idx, 1);
+        }
     }
     move(x, y) {
         x *= this.speed;
@@ -50,17 +65,13 @@ export class Player extends Entity {
         super.moveY(y);
     }
     shoot() {
-        const rot = this.rotation - Math.PI / 2;
-        const y = Math.sin(rot);
-        const x = Math.cos(rot);
-        Game.instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Vector(x, y)));
         this.shootCooldown = this.startShootCooldown;
         for (let p of this.powerups) {
             p.onShoot(this);
         }
     }
     takeDamage(amount) {
-        //this.health -= amount;
+        this.health -= amount;
         if (this.health <= 0) {
             Game.destroy(this);
             Game.gameOver();

@@ -33,12 +33,12 @@ export class Projectile extends Entity{
 
 export class Laser extends Entity{
     private cooldown = 0.5;
-    private angle;
+    private readonly angle;
+    private alreadyHit: Entity[] = []
 
     constructor(private readonly startPos: Vector, private readonly endPos: Vector) {
         super(null, startPos, 0);
         this.angle = Vector.sub(this.endPos, this.startPos).getAngle();
-        console.log(this.angle);
     }
 
     public update(deltaTime: number): void{
@@ -80,8 +80,9 @@ export class Laser extends Entity{
     }
 
     public onCollision(other: Entity): void{
-        if(other instanceof Enemy){
+        if(other instanceof Enemy && this.alreadyHit.indexOf(other) == -1){
             other.takeDamage(1);
+            this.alreadyHit.push(other);
         }
     }
 }

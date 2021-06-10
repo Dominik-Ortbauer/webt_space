@@ -108,6 +108,19 @@ export class Game{
     public static pressPause(): void{
         this.gameIsPaused = !this.gameIsPaused;
     }
+
+    public static drawHud(): void{
+        this.player.drawHud();
+    }
+
+    public static drawBar(maxLength: number, length: number, width: number, height: number, x: number, y: number, fill: string, outline: string){
+        Game.ctx.lineWidth = 1;
+        Game.ctx.strokeStyle = outline;
+        Game.ctx.strokeRect(x-1, y-1, width + 2, height + 2);
+
+        Game.ctx.fillStyle = fill;
+        Game.ctx.fillRect(x, y, (length / maxLength) * width, height);
+    }
 }
 
 function init(): void{
@@ -120,8 +133,10 @@ function init(): void{
     })
 
     Game.player = new Player();
-    //Game.player.addPowerup(Powerup.powerups[0].copy());
     Game.player.addPowerup(Powerup.powerups[1].copy());
+    Game.player.addPowerup(Powerup.powerups[2].copy());
+    Game.player.addPowerup(Powerup.powerups[2].copy());
+    Game.player.addPowerup(Powerup.powerups[2].copy());
     Game.instantiate(Game.player);
     Game.nextLevel();
     Game.lastTimeStamp = Date.now();
@@ -130,9 +145,9 @@ function init(): void{
 
 function update(): void{
     if(Game.gameInProgress && !Game.gameIsPaused) {
-
         Game.clearCanvas();
         Game.updateAllEntities((Date.now() - Game.lastTimeStamp) / 1000);
+        Game.drawHud();
         Game.lastTimeStamp = Date.now();
 
         if (Game.getBoids().length == 0) {

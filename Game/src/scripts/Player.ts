@@ -7,7 +7,8 @@ export class Player extends Entity {
     private keysPressed = {};
     private speed: number = 5;
     private startShootCooldown: number = 1;
-    private shootCooldown = 0;
+    public shootCooldown = 0;
+    private maxHealth = 200;
     private health = 200;
     private powerups: Powerup[] = [];
 
@@ -36,7 +37,13 @@ export class Player extends Entity {
     }
 
     public update(deltaTime: number): void {
-        this.shootCooldown -= deltaTime;
+        if(this.shootCooldown > 0){
+            this.shootCooldown -= deltaTime;
+        }
+
+        for(let pow of this.powerups){
+            pow.onUpdate(this, deltaTime);
+        }
 
         if(this.keysPressed['w'] && this.hitbox.leftUpper.y > 0)
             this.move(0, -1);
@@ -55,8 +62,23 @@ export class Player extends Entity {
         }
     }
 
+    public drawHud(): void{
+        Game.drawBar(this.maxHealth, this.health, 400, 20, 20, 20, 'red', 'white');
+
+        Game.drawBar(this.startShootCooldown, this.startShootCooldown - this.shootCooldown, 200, 20, 20, 60, 'green', 'white');
+    }
+
     public addPowerup(powerup: Powerup): void{
         this.powerups.push(powerup);
+    }
+
+    public removePowerup(powerup: Powerup): void{
+        let idx = this.powerups.indexOf(powerup);
+
+        if(idx >= 0)
+        {
+            this.powerups.splice(idx, 1);
+        }
     }
 
     private move(x: number, y: number): void{
@@ -67,11 +89,7 @@ export class Player extends Entity {
     }
 
     private shoot(): void{
-        const rot = this.rotation - Math.PI/2;
-        const y = Math.sin(rot);
-        const x = Math.cos(rot);
 
-        Game.instantiate(new Projectile(this.hitbox.leftUpper.middle(this.hitbox.rightLower), new Vector(x, y)));
         this.shootCooldown = this.startShootCooldown;
 
         for(let p of this.powerups){
@@ -80,7 +98,7 @@ export class Player extends Entity {
     }
 
     public takeDamage(amount: number): void{
-        //this.health -= amount;
+        this.health -= amount;
         if(this.health <= 0){
             Game.destroy(this);
             Game.gameOver();
