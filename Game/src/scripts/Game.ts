@@ -1,9 +1,10 @@
-import {Entity, IUpdate, Vector} from "./Entity.js";
+import {Entity, Hitbox, IUpdate, Vector} from "./Entity.js";
 import {Player} from "./Player.js";
 import {Flock} from "./Flock.js";
 import {Boid} from "./Boid.js";
 import {WormHole} from "./WormHole.js";
 import {Powerup} from "./Powerups.js";
+import {Quadtree} from "./Quadtree.js";
 
 export class Game{
     public static ctx: CanvasRenderingContext2D;
@@ -15,6 +16,8 @@ export class Game{
 
     private static currentLevel: number = 0;
     public static player: Player;
+
+    public static qtree: Quadtree;
 
     public static instantiate(update: IUpdate){
         this.updates.push(update);
@@ -31,6 +34,19 @@ export class Game{
     static clearCanvas(): void{
         this.ctx.fillStyle = 'black';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    public static buildQTree(): void{
+        this.qtree = new Quadtree(new Hitbox(new Vector(0, 0), new Vector(this.canvas.width, this.canvas.height)), 4);
+
+
+        for(let en of this.updates){
+            if(en instanceof Boid){
+                this.qtree.insert(en);
+            }
+        }
+
+        this.qtree.show();
     }
 
     static updateAllEntities(deltaTime: number): void{
@@ -99,7 +115,7 @@ export class Game{
 
     public static nextLevel(): void{
         this.currentLevel++;
-        Flock.createBoids(this.currentLevel * 100, new Vector(600, 400), 100);
+        Flock.createBoids(this.currentLevel * 2, new Vector(600, 400), 100);
         this.createWormholes(this.currentLevel);
     }
 
@@ -146,6 +162,9 @@ function init(): void{
 function update(): void{
     if(Game.gameInProgress && !Game.gameIsPaused) {
         Game.clearCanvas();
+
+        Game.buildQTree();
+
         Game.updateAllEntities((Date.now() - Game.lastTimeStamp) / 1000);
         Game.drawHud();
         Game.lastTimeStamp = Date.now();

@@ -1,4 +1,4 @@
-import {IUpdate, Vector} from "./Entity.js";
+import {Hitbox, IUpdate, Vector} from "./Entity.js";
 import {Boid} from "./Boid.js";
 import {Game} from "./Game.js";
 
@@ -19,7 +19,18 @@ export class Flock{
     }
 
     public static getBoids(pos: Vector, dist: number): Boid[]{
-        const boids = Game.getBoids();
+        let tmp = Game.qtree.query(new Hitbox(Vector.sub(pos, new Vector(dist/2, dist/2)), Vector.add(pos, new Vector(dist/2, dist/2))));
+        let real = [];
+
+        for(let b of tmp){
+            if(b.pos.distanceTo(pos) <= dist){
+                real.push(b);
+            }
+        }
+
+        return real;
+
+        /*const boids = Game.getBoids();
         let visibleBoids = [];
 
         for(let boid of boids){
@@ -28,6 +39,6 @@ export class Flock{
             }
         }
 
-        return visibleBoids;
+        return visibleBoids;*/
     }
 }

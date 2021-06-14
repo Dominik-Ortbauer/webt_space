@@ -41,6 +41,8 @@ export class Player extends Entity {
             this.shootCooldown -= deltaTime;
         }
 
+        //console.log(deltaTime);
+
         for(let pow of this.powerups){
             pow.onUpdate(this, deltaTime);
         }
@@ -98,7 +100,7 @@ export class Player extends Entity {
     }
 
     public takeDamage(amount: number): void{
-        this.health -= amount;
+        //this.health -= amount;
         if(this.health <= 0){
             Game.destroy(this);
             Game.gameOver();

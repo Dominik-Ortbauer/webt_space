@@ -1,9 +1,10 @@
-import { Entity, Vector } from "./Entity.js";
+import { Entity, Hitbox, Vector } from "./Entity.js";
 import { Player } from "./Player.js";
 import { Flock } from "./Flock.js";
 import { Boid } from "./Boid.js";
 import { WormHole } from "./WormHole.js";
 import { Powerup } from "./Powerups.js";
+import { Quadtree } from "./Quadtree.js";
 export class Game {
     static instantiate(update) {
         this.updates.push(update);
@@ -17,6 +18,15 @@ export class Game {
     static clearCanvas() {
         this.ctx.fillStyle = 'black';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+    static buildQTree() {
+        this.qtree = new Quadtree(new Hitbox(new Vector(0, 0), new Vector(this.canvas.width, this.canvas.height)), 4);
+        for (let en of this.updates) {
+            if (en instanceof Boid) {
+                this.qtree.insert(en);
+            }
+        }
+        this.qtree.show();
     }
     static updateAllEntities(deltaTime) {
         for (let en of this.updates) {
@@ -70,7 +80,7 @@ export class Game {
     }
     static nextLevel() {
         this.currentLevel++;
-        Flock.createBoids(this.currentLevel * 100, new Vector(600, 400), 100);
+        Flock.createBoids(this.currentLevel * 2, new Vector(600, 400), 100);
         this.createWormholes(this.currentLevel);
     }
     static pressPause() {
@@ -112,6 +122,7 @@ function init() {
 function update() {
     if (Game.gameInProgress && !Game.gameIsPaused) {
         Game.clearCanvas();
+        Game.buildQTree();
         Game.updateAllEntities((Date.now() - Game.lastTimeStamp) / 1000);
         Game.drawHud();
         Game.lastTimeStamp = Date.now();

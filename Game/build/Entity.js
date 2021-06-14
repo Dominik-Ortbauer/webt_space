@@ -92,11 +92,10 @@ export class Hitbox {
         this.rightLower.moveY(pixel);
     }
     collides(other) {
-        let collides = this.leftUpper.containedIn(other.leftUpper, other.rightLower);
-        collides = collides || this.rightLower.containedIn(other.leftUpper, other.rightLower);
-        collides = collides || other.leftUpper.containedIn(this.leftUpper, this.rightLower);
-        collides = collides || other.rightLower.containedIn(this.leftUpper, this.rightLower);
-        return collides;
+        return !(other.leftUpper.x > this.rightLower.x ||
+            other.rightLower.x < this.leftUpper.x ||
+            other.leftUpper.y > this.rightLower.y ||
+            other.rightLower.y < this.leftUpper.y);
     }
 }
 export class Vector {
