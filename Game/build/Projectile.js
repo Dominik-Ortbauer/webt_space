@@ -3,7 +3,7 @@ import { Game } from "./Game.js";
 import { Enemy } from "./Enemy.js";
 export class Projectile extends Entity {
     constructor(startPos, dir) {
-        super('Boid.png', startPos, dir.getAngle() + Math.PI / 2);
+        super('Bullet.png', startPos, dir.getAngle() + Math.PI / 2);
         this.startPos = startPos;
         this.dir = dir;
         this.speed = 10;
