@@ -1,7 +1,9 @@
-import {Vector} from "./Entity.js";
+import {Entity, Vector} from "./Entity.js";
 import {Game} from "./Game.js";
 import {Boid} from "./Boid.js";
 import {Laser} from "./Projectile.js";
+import {Enemy} from "./Enemy.js";
+import {Player} from "./Player.js";
 
 export class LaserDude extends Boid{
 
@@ -22,7 +24,12 @@ export class LaserDude extends Boid{
     private shootLaser(): void{
         let tmp = Vector.sub(this.PlayerPos, this.getPosition());
         tmp.setMagnitude(2000);
-        Game.instantiate(new Laser(this.getPosition(), Vector.add(this.getPosition(), tmp)));
+        Game.instantiate(new Laser(this.getPosition(), Vector.add(this.getPosition(), tmp), (laser: Laser, other: Entity) => {
+            if(other instanceof Player && laser.alreadyHit.indexOf(other) == -1){
+                other.takeDamage(1);
+                laser.alreadyHit.push(other);
+            }
+        }));
     }
 
     update(deltaTime: number): void {

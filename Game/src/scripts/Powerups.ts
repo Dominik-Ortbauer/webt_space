@@ -1,7 +1,8 @@
 import {Player} from "./Player.js";
 import {Game} from "./Game.js";
 import {Laser, Projectile} from "./Projectile.js";
-import {Vector} from "./Entity.js";
+import {Entity, Vector} from "./Entity.js";
+import {Enemy} from "./Enemy.js";
 
 export abstract class Powerup {
     public static powerups: Powerup[] = [];
@@ -50,7 +51,12 @@ class LaserShot extends Powerup{
         target.setMagnitude(2000);
         target.add(player.getPosition());
 
-        Game.instantiate(new Laser(player.getPosition(), target));
+        Game.instantiate(new Laser(player.getPosition(), target, (laser: Laser, other: Entity) => {
+            if(other instanceof Enemy && laser.alreadyHit.indexOf(other) == -1){
+                other.takeDamage(1);
+                laser.alreadyHit.push(other);
+            }
+        }));
     }
 
     public onUpdate(player: Player, deltaTime: number) {}
@@ -93,6 +99,11 @@ class LaserHell extends Powerup{
         target.setMagnitude(2000);
         target.add(player.getPosition());
 
-        Game.instantiate(new Laser(player.getPosition(), target));
+        Game.instantiate(new Laser(player.getPosition(), target, (laser: Laser, other: Entity) => {
+            if(other instanceof Enemy && laser.alreadyHit.indexOf(other) == -1){
+                other.takeDamage(1);
+                laser.alreadyHit.push(other);
+            }
+        }));
     }
 }
