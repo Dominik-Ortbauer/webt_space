@@ -1,5 +1,6 @@
 import { Entity, Vector } from './Entity.js';
 import { Game } from './Game.js';
+import { Powerup } from "./Powerups.js";
 export class Player extends Entity {
     constructor() {
         super('Spaceship.png', new Vector(Game.canvas.width / 2, Game.canvas.height - 100), 0);
@@ -10,6 +11,7 @@ export class Player extends Entity {
         this.maxHealth = 200;
         this.health = 200;
         this.powerups = [];
+        this.addPowerup(Powerup.powerups[0].copy());
         document.addEventListener('keydown', (ev) => {
             this.keysPressed[ev.key] = true;
         });
@@ -72,7 +74,7 @@ export class Player extends Entity {
         }
     }
     takeDamage(amount) {
-        //this.health -= amount;
+        this.health -= amount;
         if (this.health <= 0) {
             Game.destroy(this);
             Game.gameOver();

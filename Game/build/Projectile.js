@@ -7,7 +7,7 @@ export class Projectile extends Entity {
         this.startPos = startPos;
         this.dir = dir;
         this.speed = 10;
-        this.damage = 1;
+        this.damage = 3;
         dir.setMagnitude(this.speed);
     }
     update(deltaTime) {

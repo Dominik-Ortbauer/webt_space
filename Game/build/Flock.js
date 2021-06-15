@@ -16,7 +16,7 @@ export class Flock {
         let tmp = Game.qtree.query(new Hitbox(Vector.sub(pos, new Vector(dist / 2, dist / 2)), Vector.add(pos, new Vector(dist / 2, dist / 2))));
         let real = [];
         for (let b of tmp) {
-            if (b.pos.distanceTo(pos) <= dist) {
+            if (b instanceof Boid && b.pos.distanceTo(pos) <= dist) {
                 real.push(b);
             }
         }

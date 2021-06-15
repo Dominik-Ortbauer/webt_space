@@ -5,6 +5,7 @@ import {Boid} from "./Boid.js";
 import {WormHole} from "./WormHole.js";
 import {Powerup} from "./Powerups.js";
 import {Quadtree} from "./Quadtree.js";
+import {Laser} from "./Projectile.js";
 
 export class Game{
     public static ctx: CanvasRenderingContext2D;
@@ -39,9 +40,8 @@ export class Game{
     public static buildQTree(): void{
         this.qtree = new Quadtree(new Hitbox(new Vector(0, 0), new Vector(this.canvas.width, this.canvas.height)), 4);
 
-
         for(let en of this.updates){
-            if(en instanceof Boid){
+            if(en instanceof Entity){
                 this.qtree.insert(en);
             }
         }
@@ -66,6 +66,19 @@ export class Game{
     }
 
     private static collidesWith(en: Entity): Entity[]{
+        let others = [];
+        if(en instanceof Laser){
+            for(let e of this.updates){
+                if(e instanceof Entity){
+                    if(en.collides(e)){
+                        others.push(e);
+                    }
+                }
+            }
+
+            return others;
+        }
+
         return en.loaded ? this.qtree.query(en.hitbox) : [];
     }
 
@@ -105,7 +118,7 @@ export class Game{
 
     public static nextLevel(): void{
         this.currentLevel++;
-        Flock.createBoids(this.currentLevel * 1000, new Vector(600, 400), 100);
+        Flock.createBoids(this.currentLevel * 100, new Vector(600, 400), 100);
         this.createWormholes(this.currentLevel);
     }
 
@@ -139,10 +152,6 @@ function init(): void{
     })
 
     Game.player = new Player();
-    Game.player.addPowerup(Powerup.powerups[1].copy());
-    Game.player.addPowerup(Powerup.powerups[2].copy());
-    Game.player.addPowerup(Powerup.powerups[2].copy());
-    Game.player.addPowerup(Powerup.powerups[2].copy());
     Game.instantiate(Game.player);
     Game.nextLevel();
     Game.lastTimeStamp = Date.now();
