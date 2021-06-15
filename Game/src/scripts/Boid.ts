@@ -172,8 +172,9 @@ export class Boid extends Enemy{
 
     public onCollision(other: Entity) {
         if(other instanceof Player){
-            other.takeDamage(10);
+            other.takeDamage(1);
             Game.destroy(this);
+            
         }
     }
 }

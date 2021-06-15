@@ -15,6 +15,8 @@ export class Player extends Entity {
     constructor() {
         super('Spaceship.png', new Vector(Game.canvas.width/2, Game.canvas.height - 100), 0);
 
+        this.addPowerup(Powerup.powerups[0].copy());
+
         document.addEventListener('keydown', (ev)=>{
             this.keysPressed[ev.key] = true;
         });
@@ -100,7 +102,7 @@ export class Player extends Entity {
     }
 
     public takeDamage(amount: number): void{
-        //this.health -= amount;
+        this.health -= amount;
         if(this.health <= 0){
             Game.destroy(this);
             Game.gameOver();

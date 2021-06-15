@@ -5,7 +5,7 @@ import {Player} from "./Player.js";
 
 export class Projectile extends Entity{
     private speed: number = 10;
-    private damage: number = 1
+    private damage: number = 3;
     constructor(private readonly startPos: Vector, private readonly dir: Vector) {
         super('Boid.png', startPos, dir.getAngle() + Math.PI/2);
 

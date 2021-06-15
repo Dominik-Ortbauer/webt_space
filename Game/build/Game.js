@@ -5,6 +5,7 @@ import { Boid } from "./Boid.js";
 import { WormHole } from "./WormHole.js";
 import { Powerup } from "./Powerups.js";
 import { Quadtree } from "./Quadtree.js";
+import { Laser } from "./Projectile.js";
 export class Game {
     static instantiate(update) {
         this.updates.push(update);
@@ -22,7 +23,7 @@ export class Game {
     static buildQTree() {
         this.qtree = new Quadtree(new Hitbox(new Vector(0, 0), new Vector(this.canvas.width, this.canvas.height)), 4);
         for (let en of this.updates) {
-            if (en instanceof Boid) {
+            if (en instanceof Entity) {
                 this.qtree.insert(en);
             }
         }
@@ -41,6 +42,17 @@ export class Game {
         }
     }
     static collidesWith(en) {
+        let others = [];
+        if (en instanceof Laser) {
+            for (let e of this.updates) {
+                if (e instanceof Entity) {
+                    if (en.collides(e)) {
+                        others.push(e);
+                    }
+                }
+            }
+            return others;
+        }
         return en.loaded ? this.qtree.query(en.hitbox) : [];
     }
     static gameOver() {
@@ -102,10 +114,6 @@ function init() {
         Game.pressPause();
     });
     Game.player = new Player();
-    Game.player.addPowerup(Powerup.powerups[1].copy());
-    Game.player.addPowerup(Powerup.powerups[2].copy());
-    Game.player.addPowerup(Powerup.powerups[2].copy());
-    Game.player.addPowerup(Powerup.powerups[2].copy());
     Game.instantiate(Game.player);
     Game.nextLevel();
     Game.lastTimeStamp = Date.now();
