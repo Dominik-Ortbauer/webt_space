@@ -27,10 +27,11 @@ export class Projectile extends Entity {
     }
 }
 export class Laser extends Entity {
-    constructor(startPos, endPos) {
+    constructor(startPos, endPos, onCol) {
         super(null, startPos, 0);
         this.startPos = startPos;
         this.endPos = endPos;
+        this.onCol = onCol;
         this.cooldown = 0.5;
         this.alreadyHit = [];
         this.angle = Vector.sub(this.endPos, this.startPos).getAngle();
@@ -67,10 +68,7 @@ export class Laser extends Entity {
         return false;
     }
     onCollision(other) {
-        if (other instanceof Enemy && this.alreadyHit.indexOf(other) == -1) {
-            other.takeDamage(1);
-            this.alreadyHit.push(other);
-        }
+        this.onCol(this, other);
     }
 }
 //# sourceMappingURL=Projectile.js.map
