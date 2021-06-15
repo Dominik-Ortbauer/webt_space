@@ -66,17 +66,7 @@ export class Game{
     }
 
     private static collidesWith(en: Entity): Entity[]{
-        let others: Entity[] = [];
-
-        for(let up of this.updates){
-            if(up instanceof Entity){
-                if(en.collides(up)){
-                    others.push(up);
-                }
-            }
-        }
-
-        return others;
+        return en.loaded ? this.qtree.query(en.hitbox) : [];
     }
 
     static gameInProgress:boolean = true;
@@ -115,7 +105,7 @@ export class Game{
 
     public static nextLevel(): void{
         this.currentLevel++;
-        Flock.createBoids(this.currentLevel * 2, new Vector(600, 400), 100);
+        Flock.createBoids(this.currentLevel * 1000, new Vector(600, 400), 100);
         this.createWormholes(this.currentLevel);
     }
 
