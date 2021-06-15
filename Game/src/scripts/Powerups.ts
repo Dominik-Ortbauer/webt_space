@@ -4,6 +4,38 @@ import {Laser, Projectile} from "./Projectile.js";
 import {Entity, Vector} from "./Entity.js";
 import {Enemy} from "./Enemy.js";
 
+export class LaserShotItem extends Entity{
+    constructor(pos: Vector) {
+        super('LaserPowerup', pos, 0);
+    }
+
+    update(deltaTime: number) {
+    }
+
+    public onCollision(other: Entity) {
+        if(other instanceof Player){
+            other.addPowerup(new LaserShot());
+            Game.destroy(this);
+        }
+    }
+}
+
+export class MultishotItem extends Entity{
+    constructor(pos: Vector) {
+        super('MultishotPowerup', pos, 0);
+    }
+
+    update(deltaTime: number) {
+    }
+
+    public onCollision(other: Entity) {
+        if(other instanceof Player){
+            other.addPowerup(new Multishot());
+            Game.destroy(this);
+        }
+    }
+}
+
 export abstract class Powerup {
     public static powerups: Powerup[] = [];
 
