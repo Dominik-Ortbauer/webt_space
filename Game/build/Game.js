@@ -72,7 +72,7 @@ export class Game {
     }
     static nextLevel() {
         this.currentLevel++;
-        Flock.createBoids(this.currentLevel * 1000, new Vector(600, 400), 100);
+        Flock.createBoids(this.currentLevel * 100, new Vector(600, 400), 100);
         this.createWormholes(this.currentLevel);
     }
     static pressPause() {

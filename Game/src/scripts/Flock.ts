@@ -1,11 +1,12 @@
 import {Hitbox, IUpdate, Vector} from "./Entity.js";
 import {Boid} from "./Boid.js";
 import {Game} from "./Game.js";
+import {LaserDude} from "./LaserDude.js";
 
 export class Flock{
 
     public static createBoids(amountOfBoids: number, pos: Vector, spray: number){
-        for (let i = 0; i < amountOfBoids; i++)
+        for (let i = 0; i < amountOfBoids * 0.95; i++)
         {
             const offset = Math.random() * spray;
             const angle = Math.random() * (Math.PI * 2);
@@ -14,6 +15,17 @@ export class Flock{
             const x = Math.cos(angle) * offset;
 
             const boid: Boid = new Boid(3, Vector.add(new Vector(x, y), pos), Math.random() * (Math.PI * 2));
+            Game.instantiate(boid);
+        }
+        for (let i = 0; i < amountOfBoids * 0.05; i++)
+        {
+            const offset = Math.random() * spray;
+            const angle = Math.random() * (Math.PI * 2);
+
+            const y = Math.sin(angle) * offset;
+            const x = Math.cos(angle) * offset;
+
+            const boid: LaserDude = new LaserDude(3, Vector.add(new Vector(x, y), pos), Math.random() * (Math.PI * 2));
             Game.instantiate(boid);
         }
     }
