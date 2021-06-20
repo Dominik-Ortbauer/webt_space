@@ -19,7 +19,7 @@ export class Boid extends Enemy {
         //this.loopEdges();
         this.repelEdges();
         if (Game.player !== undefined) {
-            //this.moveTowards(Game.player.getPosition());
+            this.moveTowards(Game.player.getPosition());
         }
         this.pos.add(this.vel);
         this.vel.add(this.acc);

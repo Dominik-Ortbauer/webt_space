@@ -1,8 +1,10 @@
 export class Entity {
     constructor(imgSrc, pos, rotation) {
         this.rotation = rotation;
+        this.lastTimeStamp = 0;
         this.showHitboxxes = false;
         this.loaded = false;
+        this.lastTimeStamp = Date.now();
         if (imgSrc === null) {
             return;
         }

@@ -11,6 +11,7 @@ export class Player extends Entity {
     private maxHealth = 200;
     private health = 200;
     private powerups: Powerup[] = [];
+    private mouse: MouseEvent;
 
     constructor() {
         super('Spaceship.png', new Vector(Game.canvas.width/2, Game.canvas.height - 100), 0);
@@ -32,11 +33,15 @@ export class Player extends Entity {
         });
 
         document.addEventListener('mousemove', (ev) => {
-            this.pointToward(Vector.sub(new Vector(ev.clientX, ev.clientY), new Vector(Game.canvas.offsetLeft, Game.canvas.offsetTop)));
+            this.mouse = ev;
         });
     }
 
     public update(deltaTime: number): void {
+        if(this.mouse !== undefined){
+            this.pointToward(Vector.sub(new Vector(this.mouse.clientX, this.mouse.clientY), new Vector(Game.canvas.offsetLeft, Game.canvas.offsetTop)));
+        }
+
         if(this.shootCooldown > 0){
             this.shootCooldown -= deltaTime;
         }
@@ -91,7 +96,6 @@ export class Player extends Entity {
     }
 
     private shoot(): void{
-
         this.shootCooldown = this.startShootCooldown;
 
         for(let p of this.powerups){
