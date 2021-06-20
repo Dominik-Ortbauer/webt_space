@@ -3,6 +3,7 @@ import {Entity, Vector} from "./Entity.js";
 import {Flock} from "./Flock.js";
 import {Game} from "./Game.js";
 import {Player} from "./Player.js";
+import {LaserDude} from "./LaserDude";
 
 export class Boid extends Enemy{
     private static readonly lookingDist = 30;
@@ -16,7 +17,7 @@ export class Boid extends Enemy{
     private acc: Vector = new Vector(0.0, 0.0);
 
     constructor(health: number, public pos: Vector, rotation: number) {
-        super('Boid.png', health, pos, rotation);
+            super('Boid.png', health, pos, rotation);
         this.vel.scale(10);
     }
 
@@ -25,8 +26,8 @@ export class Boid extends Enemy{
         this.alignment();
         this.cohesion();
         this.separation();
-        //this.loopEdges();
-        this.repelEdges();
+        this.loopEdges();
+        //this.repelEdges();
 
         if(Game.player !== undefined){
             this.moveTowards(Game.player.getPosition());
@@ -171,8 +172,9 @@ export class Boid extends Enemy{
 
     public onCollision(other: Entity) {
         if(other instanceof Player){
-            other.takeDamage(10);
+            other.takeDamage(1);
             Game.destroy(this);
+            
         }
     }
 }

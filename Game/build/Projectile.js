@@ -3,11 +3,11 @@ import { Game } from "./Game.js";
 import { Enemy } from "./Enemy.js";
 export class Projectile extends Entity {
     constructor(startPos, dir) {
-        super('Boid.png', startPos, dir.getAngle() + Math.PI / 2);
+        super('Bullet.png', startPos, dir.getAngle() + Math.PI / 2);
         this.startPos = startPos;
         this.dir = dir;
         this.speed = 10;
-        this.damage = 1;
+        this.damage = 3;
         dir.setMagnitude(this.speed);
     }
     update(deltaTime) {
@@ -27,10 +27,11 @@ export class Projectile extends Entity {
     }
 }
 export class Laser extends Entity {
-    constructor(startPos, endPos) {
+    constructor(startPos, endPos, onCol) {
         super(null, startPos, 0);
         this.startPos = startPos;
         this.endPos = endPos;
+        this.onCol = onCol;
         this.cooldown = 0.5;
         this.alreadyHit = [];
         this.angle = Vector.sub(this.endPos, this.startPos).getAngle();
@@ -67,10 +68,7 @@ export class Laser extends Entity {
         return false;
     }
     onCollision(other) {
-        if (other instanceof Enemy && this.alreadyHit.indexOf(other) == -1) {
-            other.takeDamage(1);
-            this.alreadyHit.push(other);
-        }
+        this.onCol(this, other);
     }
 }
 //# sourceMappingURL=Projectile.js.map

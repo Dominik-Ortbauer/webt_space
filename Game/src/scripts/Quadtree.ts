@@ -9,12 +9,12 @@ export class Quadtree{
     private se: Quadtree;
     private sw: Quadtree;
 
-    private boids: Boid[];
+    private enitities: Entity[];
 
     private divided: boolean = false;
 
     constructor(private readonly boundary: Hitbox, private readonly capacity) {
-        this.boids = [];
+        this.enitities = [];
     }
 
     private subdivide(): void{
@@ -28,34 +28,34 @@ export class Quadtree{
         this.divided = true;
     }
 
-    public insert(boid: Boid): void{
-        if(!boid.getPosition().containedIn(this.boundary.leftUpper, this.boundary.rightLower)){
+    public insert(entitiy: Entity): void{
+        if(!entitiy.loaded || !entitiy.getPosition().containedIn(this.boundary.leftUpper, this.boundary.rightLower)){
             return;
         }
 
-        if(this.boids.length < this.capacity){
-            this.boids.push(boid);
+        if(this.enitities.length < this.capacity){
+            this.enitities.push(entitiy);
         } else{
             if(!this.divided){
                 this.subdivide();
             }
 
-            this.nw.insert(boid);
-            this.ne.insert(boid);
-            this.se.insert(boid);
-            this.sw.insert(boid);
+            this.nw.insert(entitiy);
+            this.ne.insert(entitiy);
+            this.se.insert(entitiy);
+            this.sw.insert(entitiy);
         }
     }
 
-    public query(range: Hitbox): Boid[]{
-        let found: Boid[] = [];
+    public query(range: Hitbox): Entity[]{
+        let found: Entity[] = [];
 
         if(!this.boundary.collides(range)){
             return found;
         }
 
-        for(let en of this.boids){
-            if(en.getPosition().containedIn(range.leftUpper, range.rightLower)){
+        for(let en of this.enitities){
+            if(en.loaded && en.hitbox.collides(range)){
                 found.push(en);
             }
         }

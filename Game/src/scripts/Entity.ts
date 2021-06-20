@@ -121,10 +121,10 @@ export class Hitbox {
     }
 
     public collides(other: Hitbox): boolean{
-        return !(other.leftUpper.x > this.rightLower.x ||
-        other.rightLower.x < this.leftUpper.x ||
-        other.leftUpper.y > this.rightLower.y ||
-        other.rightLower.y < this.leftUpper.y);
+        return !(other.leftUpper.x >= this.rightLower.x ||
+        other.rightLower.x <= this.leftUpper.x ||
+        other.leftUpper.y >= this.rightLower.y ||
+        other.rightLower.y <= this.leftUpper.y);
     }
 }
 

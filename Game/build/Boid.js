@@ -16,8 +16,8 @@ export class Boid extends Enemy {
         this.alignment();
         this.cohesion();
         this.separation();
-        //this.loopEdges();
-        this.repelEdges();
+        this.loopEdges();
+        //this.repelEdges();
         if (Game.player !== undefined) {
             this.moveTowards(Game.player.getPosition());
         }
@@ -146,7 +146,7 @@ export class Boid extends Enemy {
     }
     onCollision(other) {
         if (other instanceof Player) {
-            other.takeDamage(10);
+            other.takeDamage(1);
             Game.destroy(this);
         }
     }

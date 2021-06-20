@@ -5,9 +5,9 @@ import {Player} from "./Player.js";
 
 export class Projectile extends Entity{
     private speed: number = 10;
-    private damage: number = 1
+    private damage: number = 3;
     constructor(private readonly startPos: Vector, private readonly dir: Vector) {
-        super('Boid.png', startPos, dir.getAngle() + Math.PI/2);
+        super('Bullet.png', startPos, dir.getAngle() + Math.PI/2);
 
         dir.setMagnitude(this.speed);
     }
@@ -34,9 +34,9 @@ export class Projectile extends Entity{
 export class Laser extends Entity{
     private cooldown = 0.5;
     private readonly angle;
-    private alreadyHit: Entity[] = []
+    public alreadyHit: Entity[] = []
 
-    constructor(private readonly startPos: Vector, private readonly endPos: Vector) {
+    constructor(private readonly startPos: Vector, private readonly endPos: Vector, private readonly onCol: (laser: Laser, other: Entity) => void) {
         super(null, startPos, 0);
         this.angle = Vector.sub(this.endPos, this.startPos).getAngle();
     }
@@ -80,9 +80,6 @@ export class Laser extends Entity{
     }
 
     public onCollision(other: Entity): void{
-        if(other instanceof Enemy && this.alreadyHit.indexOf(other) == -1){
-            other.takeDamage(1);
-            this.alreadyHit.push(other);
-        }
+        this.onCol(this, other);
     }
 }
