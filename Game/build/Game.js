@@ -29,9 +29,11 @@ export class Game {
         }
         //this.qtree.show();
     }
-    static updateAllEntities(deltaTime) {
+    static updateAllEntities() {
         for (let en of this.updates) {
+            const deltaTime = (Date.now() - en.lastTimeStamp) / 1000;
             en.update(deltaTime);
+            en.lastTimeStamp = Date.now();
             if (en instanceof Entity) {
                 en.draw();
                 const others = Game.collidesWith(en);
@@ -103,7 +105,6 @@ export class Game {
     }
 }
 Game.updates = [];
-Game.lastTimeStamp = 0;
 Game.currentLevel = 0;
 Game.gameInProgress = true;
 Game.gameIsPaused = false;
@@ -117,16 +118,14 @@ function init() {
     Game.player = new Player();
     Game.instantiate(Game.player);
     Game.nextLevel();
-    Game.lastTimeStamp = Date.now();
     update();
 }
 function update() {
     if (Game.gameInProgress && !Game.gameIsPaused) {
         Game.clearCanvas();
         Game.buildQTree();
-        Game.updateAllEntities((Date.now() - Game.lastTimeStamp) / 1000);
+        Game.updateAllEntities();
         Game.drawHud();
-        Game.lastTimeStamp = Date.now();
         if (Game.getBoids().length == 0) {
             Game.nextLevel();
         }

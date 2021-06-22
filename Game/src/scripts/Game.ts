@@ -13,8 +13,6 @@ export class Game{
 
     private static updates: IUpdate[] = [];
 
-    public static lastTimeStamp: number = 0;
-
     private static currentLevel: number = 0;
     public static player: Player;
 
@@ -49,9 +47,11 @@ export class Game{
         //this.qtree.show();
     }
 
-    static updateAllEntities(deltaTime: number): void{
+    static updateAllEntities(): void{
         for(let en of this.updates){
+            const deltaTime = (Date.now() - en.lastTimeStamp) / 1000;
             en.update(deltaTime);
+            en.lastTimeStamp = Date.now();
 
             if(en instanceof Entity){
                 (<Entity>en).draw();
@@ -155,7 +155,6 @@ function init(): void{
     Game.player = new Player();
     Game.instantiate(Game.player);
     Game.nextLevel();
-    Game.lastTimeStamp = Date.now();
     update();
 }
 
@@ -165,9 +164,9 @@ function update(): void{
 
         Game.buildQTree();
 
-        Game.updateAllEntities((Date.now() - Game.lastTimeStamp) / 1000);
+        Game.updateAllEntities();
+
         Game.drawHud();
-        Game.lastTimeStamp = Date.now();
 
         if (Game.getBoids().length == 0) {
             Game.nextLevel();

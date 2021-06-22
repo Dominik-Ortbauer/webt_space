@@ -1,14 +1,17 @@
 export interface IUpdate{
     update(deltaTime: number): void;
+    lastTimeStamp: number;
 }
 
 export abstract class Entity implements IUpdate{
+    public lastTimeStamp: number = 0;
     private readonly showHitboxxes = false;
     hitbox: Hitbox;
     readonly img: HTMLImageElement;
     public loaded: boolean = false;
 
     protected constructor(imgSrc: string, pos: Vector, protected rotation: number) {
+        this.lastTimeStamp = Date.now();
         if(imgSrc === null){
             return;
         }
