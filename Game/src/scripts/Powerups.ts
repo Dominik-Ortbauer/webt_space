@@ -6,7 +6,7 @@ import {Enemy} from "./Enemy.js";
 
 export class LaserShotItem extends Entity{
     constructor(pos: Vector) {
-        super('LaserPowerup', pos, 0);
+        super('LaserPowerup.png', pos, 0);
     }
 
     update(deltaTime: number) {
@@ -22,7 +22,7 @@ export class LaserShotItem extends Entity{
 
 export class MultishotItem extends Entity{
     constructor(pos: Vector) {
-        super('MultishotPowerup', pos, 0);
+        super('MultishotPowerup.png', pos, 0);
     }
 
     update(deltaTime: number) {
@@ -36,11 +36,27 @@ export class MultishotItem extends Entity{
     }
 }
 
+export class FasterReloadItem extends Entity{
+    constructor(pos: Vector) {
+        super('MultishotPowerup.png', pos, 0);
+    }
+
+    update(deltaTime: number) {
+    }
+
+    public onCollision(other: Entity) {
+        if(other instanceof Player){
+            other.addPowerup(new FasterReload());
+            Game.destroy(this);
+        }
+    }
+}
+
 export abstract class Powerup {
     public static powerups: Powerup[] = [];
 
     public static init() {
-        //add in instance of each subclass to powerups array
+        //add one instance of each subclass to powerups array
         this.powerups.push(new Multishot());
         this.powerups.push(new LaserShot());
         this.powerups.push(new FasterReload());

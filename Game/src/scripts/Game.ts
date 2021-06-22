@@ -46,7 +46,7 @@ export class Game{
             }
         }
 
-        this.qtree.show();
+        //this.qtree.show();
     }
 
     static updateAllEntities(deltaTime: number): void{
@@ -118,7 +118,7 @@ export class Game{
 
     public static nextLevel(): void{
         this.currentLevel++;
-        Flock.createBoids(this.currentLevel * 100, new Vector(600, 400), 100);
+        Flock.createBoids(this.currentLevel * 50, new Vector(600, 400), 100);
         this.createWormholes(this.currentLevel);
     }
 
@@ -126,6 +126,7 @@ export class Game{
 
     public static pressPause(): void{
         this.gameIsPaused = !this.gameIsPaused;
+        this.lastTimeStamp = Date.now();
     }
 
     public static drawHud(): void{

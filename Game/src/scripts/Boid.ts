@@ -30,7 +30,7 @@ export class Boid extends Enemy{
         //this.repelEdges();
 
         if(Game.player !== undefined){
-            //this.moveTowards(Game.player.getPosition());
+            this.moveTowards(Game.player.getPosition());
         }
 
         this.pos.add(this.vel);
@@ -174,7 +174,6 @@ export class Boid extends Enemy{
         if(other instanceof Player){
             other.takeDamage(1);
             Game.destroy(this);
-            
         }
     }
 }

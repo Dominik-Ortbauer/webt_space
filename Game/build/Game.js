@@ -27,7 +27,7 @@ export class Game {
                 this.qtree.insert(en);
             }
         }
-        this.qtree.show();
+        //this.qtree.show();
     }
     static updateAllEntities(deltaTime) {
         for (let en of this.updates) {
@@ -84,11 +84,12 @@ export class Game {
     }
     static nextLevel() {
         this.currentLevel++;
-        Flock.createBoids(this.currentLevel * 100, new Vector(600, 400), 100);
+        Flock.createBoids(this.currentLevel * 50, new Vector(600, 400), 100);
         this.createWormholes(this.currentLevel);
     }
     static pressPause() {
         this.gameIsPaused = !this.gameIsPaused;
+        this.lastTimeStamp = Date.now();
     }
     static drawHud() {
         this.player.drawHud();
